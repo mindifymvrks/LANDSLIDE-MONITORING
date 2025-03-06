@@ -8,7 +8,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: #1c1c1c;
+            background: black;
             color: white;
             margin: 0;
             padding: 0;
@@ -148,9 +148,8 @@
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('visible');
             });
-            document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('home').classList.add('visible');
         }
     </script>
 </body>
 </html>
-
