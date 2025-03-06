@@ -9,7 +9,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: black;
-            color: black;
+            color: white;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
@@ -25,21 +25,11 @@
             gap: 20px;
         }
         nav a {
-            color: black;
+            color: white;
             text-decoration: none;
             font-weight: bold;
             cursor: pointer;
             position: relative;
-        }
-        nav a:first-child::after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 2px;
-            background: black;
-            position: absolute;
-            bottom: -5px;
-            left: 0;
         }
         .main-content {
             text-align: center;
@@ -70,6 +60,7 @@
             background: rgba(255, 255, 255, 0.2);
             padding: 15px;
             border-radius: 10px;
+            color: white;
         }
         .team-member img {
             width: 100px;
@@ -95,10 +86,10 @@
     </div>
     
     <div id="about" class="section">
-        <h2 style="font-family: 'Playfair Display', serif;">Project Overview</h2>
-        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>
+        <h2 style="font-family: 'Playfair Display', serif; color: white;">Project Overview</h2>
+        <p style="font-family: 'Merriweather', serif; color: white;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>
         
-        <h2 style="font-family: 'Playfair Display', serif;">Meet the Team</h2>
+        <h2 style="font-family: 'Playfair Display', serif; color: white;">Meet the Team</h2>
         <div class="team-container">
             <div class="team-member">
                 <h3>Guide</h3>
