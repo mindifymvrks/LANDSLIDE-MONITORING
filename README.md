@@ -34,6 +34,7 @@
         .main-content {
             text-align: center;
             margin-top: 50px;
+            display: block;
         }
         .section {
             padding: 50px;
@@ -68,22 +69,17 @@
             border-radius: 50%;
             object-fit: cover;
         }
-
-        /* Hide the repository name if it appears */
-        .repo-name {
-            display: none;
-        }
     </style>
 </head>
 <body>
     <header>
         <div style="font-size: 24px; font-weight: bold; color: white; font-family: 'Playfair Display', serif;">MAVERICKS</div>
         <nav>
-            <a href="#home" onclick="showHome()">Home</a>
-            <a href="#about" onclick="showSection('about')">About</a>
-            <a href="#datas">Datas</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#contact">Contact Details</a>
+            <a href="#" onclick="showHome()">Home</a>
+            <a href="#" onclick="showSection('about')">About</a>
+            <a href="#" onclick="showSection('datas')">Datas</a>
+            <a href="#" onclick="showSection('gallery')">Gallery</a>
+            <a href="#" onclick="showSection('contact')">Contact Details</a>
         </nav>
     </header>
     <div id="home" class="main-content visible">
@@ -143,14 +139,14 @@
     
     <script>
         function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
+            document.querySelectorAll('.section, .main-content').forEach(section => {
                 section.classList.remove('visible');
             });
             document.getElementById(sectionId).classList.add('visible');
         }
         
         function showHome() {
-            document.querySelectorAll('.section').forEach(section => {
+            document.querySelectorAll('.section, .main-content').forEach(section => {
                 section.classList.remove('visible');
             });
             document.getElementById('home').classList.add('visible');
