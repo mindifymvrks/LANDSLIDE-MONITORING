@@ -9,7 +9,6 @@
         body {
             font-family: 'Poppins', sans-serif;
             background: #FFC72C;
-            text-align: center;
             color: black;
             margin: 0;
             padding: 0;
@@ -18,6 +17,7 @@
         header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 20px;
         }
         nav {
@@ -29,20 +29,31 @@
             text-decoration: none;
             font-weight: bold;
             cursor: pointer;
+            position: relative;
+        }
+        nav a:first-child::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: black;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
         }
         .main-content {
-            transition: opacity 0.5s ease-out;
-        }
-        .hidden {
-            display: none;
+            text-align: center;
+            margin-top: 50px;
         }
         .section {
             padding: 50px;
+            display: none;
             opacity: 0;
             transform: translateY(50px);
             transition: opacity 1s ease-out, transform 1s ease-out;
         }
         .visible {
+            display: block;
             opacity: 1;
             transform: translateY(0);
         }
@@ -66,16 +77,6 @@
             border-radius: 50%;
             object-fit: cover;
         }
-        .button {
-            background: purple;
-            padding: 10px 20px;
-            color: white;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 20px;
-            cursor: pointer;
-            font-family: 'Merriweather', serif;
-        }
     </style>
 </head>
 <body>
@@ -83,18 +84,17 @@
         <div style="font-size: 24px; font-weight: bold; color: white; font-family: 'Playfair Display', serif;">MAVERICKS</div>
         <nav>
             <a href="#home">Home</a>
-            <a href="#about">About</a>
+            <a href="#about" onclick="showSection('about')">About</a>
             <a href="#datas">Datas</a>
             <a href="#gallery">Gallery</a>
             <a href="#contact">Contact Details</a>
         </nav>
     </header>
-    <div id="main-content" class="main-content">
-        <div class="main-heading" style="font-size: 36px; font-weight: bold; font-family: 'Playfair Display', serif; margin-top: 50px; color: black;">Integrated Landslide Monitoring and Early Warning System</div>
-        <div class="button" onclick="showDetails()">Know more →</div>
+    <div id="home" class="main-content">
+        <h1 style="font-family: 'Playfair Display', serif; color: black;">Integrated Landslide Monitoring and Early Warning System</h1>
     </div>
     
-    <div id="details" class="section hidden">
+    <div id="about" class="section">
         <h2 style="font-family: 'Playfair Display', serif;">Project Overview</h2>
         <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>
         
@@ -143,25 +143,14 @@
                 <p>Saintgits College of Engineering</p>
             </div>
         </div>
-        <div class="button" onclick="goBack()">Click Back</div>
     </div>
     
     <script>
-        function showDetails() {
-            document.getElementById('main-content').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('main-content').classList.add('hidden');
-                document.getElementById('details').classList.remove('hidden');
-                document.getElementById('details').classList.add('visible');
-            }, 500);
-        }
-        function goBack() {
-            document.getElementById('details').classList.remove('visible');
-            setTimeout(() => {
-                document.getElementById('details').classList.add('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
-                document.getElementById('main-content').style.opacity = '1';
-            }, 500);
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('visible');
+            });
+            document.getElementById(sectionId).classList.add('visible');
         }
     </script>
 </body>
