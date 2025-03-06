@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +8,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: grey;
+            background: black;
             color: white;
             margin: 0;
             padding: 0;
@@ -75,7 +74,7 @@
     <header>
         <div style="font-size: 24px; font-weight: bold; color: white; font-family: 'Playfair Display', serif;">MAVERICKS</div>
         <nav>
-            <a href="#home">Home</a>
+            <a href="#home" onclick="showHome()">Home</a>
             <a href="#about" onclick="showSection('about')">About</a>
             <a href="#datas">Datas</a>
             <a href="#gallery">Gallery</a>
@@ -143,6 +142,13 @@
                 section.classList.remove('visible');
             });
             document.getElementById(sectionId).classList.add('visible');
+        }
+        
+        function showHome() {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('visible');
+            });
+            document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
