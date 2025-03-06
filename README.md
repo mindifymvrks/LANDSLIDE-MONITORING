@@ -8,7 +8,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: black;
+            background: #1c1c1c;
             color: white;
             margin: 0;
             padding: 0;
