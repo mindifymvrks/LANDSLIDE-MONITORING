@@ -68,6 +68,11 @@
             border-radius: 50%;
             object-fit: cover;
         }
+
+        /* Hide the repository name if it appears */
+        .repo-name {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -81,7 +86,7 @@
             <a href="#contact">Contact Details</a>
         </nav>
     </header>
-    <div id="home" class="main-content">
+    <div id="home" class="main-content visible">
         <h1 style="font-family: 'Playfair Display', serif; color: white;">Integrated Landslide Monitoring and Early Warning System</h1>
     </div>
     
