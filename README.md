@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +9,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: black;
+            background: grey;
             color: white;
             margin: 0;
             padding: 0;
