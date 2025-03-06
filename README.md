@@ -91,7 +91,7 @@
         </nav>
     </header>
     <div id="home" class="main-content">
-        <h1 style="font-family: 'Playfair Display', serif; color: black;">Integrated Landslide Monitoring and Early Warning System</h1>
+        <h1 style="font-family: 'Playfair Display', serif; color: white;">Integrated Landslide Monitoring and Early Warning System</h1>
     </div>
     
     <div id="about" class="section">
