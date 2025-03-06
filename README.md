@@ -60,6 +60,23 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .team-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .team-member {
+            text-align: center;
+            width: 250px;
+        }
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -72,12 +89,55 @@
         </nav>
     </header>
     <div class="main-heading">Integrated Landslide Monitoring Early Warning System</div>
-    <div class="button" onclick="showDetails()">Know more →</div>  
+    <div class="button" onclick="showDetails()">Know more →</div>
     <div id="details" class="section hidden">
         <h2 style="font-family: 'Playfair Display', serif;">Project Overview</h2>
-        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>   
+        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>      
         <h2 style="font-family: 'Playfair Display', serif;">Meet the Team</h2>
-        <!-- Team details will be dynamically added here -->
+        <div class="team-container">
+            <div class="team-member">
+                <h3>Guide</h3>
+                <img src="guide.jpg" alt="Guide">
+                <p>Er. Nirmal John Joy</p>
+                <p>Assistant Professor, Department of Civil Engineering</p>
+                <p>Saintgits College of Engineering</p>
+            </div>
+            <div class="team-member">
+                <h3>Co-Guide</h3>
+                <img src="co-guide.jpg" alt="Co-Guide">
+                <p>Er. Joe G Philip</p>
+                <p>Assistant Professor, Department of Civil Engineering</p>
+                <p>Saintgits College of Engineering</p>
+            </div>
+        </div>
+        <div class="team-container">
+            <div class="team-member">
+                <h3>Core Member</h3>
+                <img src="jithin.jpg" alt="Jithin Joseph Loveson">
+                <p>Jithin Joseph Loveson</p>
+                <p>Saintgits College of Engineering</p>
+            </div>
+            <div class="team-member">
+                <h3>Core Member</h3>
+                <img src="mervin.jpg" alt="Mervin Mathew Shibu">
+                <p>Mervin Mathew Shibu</p>
+                <p>Saintgits College of Engineering</p>
+            </div>
+            <div class="team-member">
+                <h3>Core Member</h3>
+                <img src="noble.jpg" alt="Noble Sajan">
+                <p>Noble Sajan</p>
+                <p>Saintgits College of Engineering</p>
+            </div>
+        </div>
+        <div class="team-container">
+            <div class="team-member">
+                <h3>Joint Co-Partner</h3>
+                <img src="manu.jpg" alt="Manu M Kumar">
+                <p>Manu M Kumar</p>
+                <p>Saintgits College of Engineering</p>
+            </div>
+        </div>
     </div>
     <script>
         function showDetails() {
