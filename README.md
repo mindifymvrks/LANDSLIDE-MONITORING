@@ -72,16 +72,13 @@
         </nav>
     </header>
     <div class="main-heading">Integrated Landslide Monitoring Early Warning System</div>
-    <div class="button" onclick="showDetails()">Know more →</div>
-    
+    <div class="button" onclick="showDetails()">Know more →</div>  
     <div id="details" class="section hidden">
         <h2 style="font-family: 'Playfair Display', serif;">Project Overview</h2>
-        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>
-        
+        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>   
         <h2 style="font-family: 'Playfair Display', serif;">Meet the Team</h2>
         <!-- Team details will be dynamically added here -->
     </div>
-    
     <script>
         function showDetails() {
             document.getElementById('details').classList.remove('hidden');
