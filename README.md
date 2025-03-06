@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integrated Landslide Monitoring And Early Warning System</title>
+    <title>Landslide Monitoring System</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Merriweather:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
         
@@ -82,13 +82,15 @@
     <header>
         <div style="font-size: 24px; font-weight: bold; color: white; font-family: 'Playfair Display', serif;">MAVERICKS</div>
         <nav>
-            <a href="#dashboard">Dashboard</a>
-            <a href="#records">Records</a>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#datas">Datas</a>
+            <a href="#gallery">Gallery</a>
             <a href="#contact">Contact Details</a>
         </nav>
     </header>
     <div id="main-content" class="main-content">
-        <div class="main-heading" style="font-size: 36px; font-weight: bold; font-family: 'Playfair Display', serif; margin-top: 50px; color: black;">Landslide Monitoring</div>
+        <div class="main-heading" style="font-size: 36px; font-weight: bold; font-family: 'Playfair Display', serif; margin-top: 50px; color: black;">Integrated Landslide Monitoring and Early Warning System</div>
         <div class="button" onclick="showDetails()">Know more →</div>
     </div>
     
