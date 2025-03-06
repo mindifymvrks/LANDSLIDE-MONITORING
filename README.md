@@ -60,34 +60,15 @@
             opacity: 1;
             transform: translateY(0);
         }
-        .team-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .team-member {
-            width: 250px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            font-weight: bold;
-            font-family: 'Merriweather', serif;
-        }
-        .team-member img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
     <header>
         <div style="font-size: 24px; font-weight: bold; color: red; font-family: 'Playfair Display', serif;">MAVERICKS</div>
         <nav>
+            <a href="#dashboard">Dashboard</a>
             <a href="#records">Records</a>
+            <a href="#contact">Contact Details</a>
         </nav>
     </header>
     <div class="main-heading">Integrated Landslide Monitoring Early Warning System</div>
@@ -98,46 +79,7 @@
         <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>
         
         <h2 style="font-family: 'Playfair Display', serif;">Meet the Team</h2>
-        <div class="team-container">
-            <div class="team-member">
-                <img src="guide.jpg" alt="Guide">
-                <h3>Er. Nirmal John Joy</h3>
-                <p>Assistant Professor, Department of Civil Engineering<br>Saintgits College of Engineering</p>
-            </div>
-            <div class="team-member">
-                <img src="co-guide.jpg" alt="Co-Guide">
-                <h3>Er. Joe G Philip</h3>
-                <p>Assistant Professor, Department of Civil Engineering<br>Saintgits College of Engineering</p>
-            </div>
-        </div>
-        
-        <h2 style="font-family: 'Playfair Display', serif;">Core Members</h2>
-        <div class="team-container">
-            <div class="team-member">
-                <img src="jithin.jpg" alt="Jithin Joseph Loveson">
-                <h3>Jithin Joseph Loveson</h3>
-                <p>Saintgits College of Engineering</p>
-            </div>
-            <div class="team-member">
-                <img src="mervin.jpg" alt="Mervin Mathew Shibu">
-                <h3>Mervin Mathew Shibu</h3>
-                <p>Saintgits College of Engineering</p>
-            </div>
-            <div class="team-member">
-                <img src="noble.jpg" alt="Noble Sajan">
-                <h3>Noble Sajan</h3>
-                <p>Saintgits College of Engineering</p>
-            </div>
-        </div>
-        
-        <h2 style="font-family: 'Playfair Display', serif;">Joint Co-Partner</h2>
-        <div class="team-container">
-            <div class="team-member">
-                <img src="manu.jpg" alt="Manu M Kumar">
-                <h3>Manu M Kumar</h3>
-                <p>Saintgits College of Engineering</p>
-            </div>
-        </div>
+        <!-- Team details will be dynamically added here -->
     </div>
     
     <script>
