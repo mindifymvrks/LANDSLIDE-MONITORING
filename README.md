@@ -5,39 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landslide Monitoring System</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Merriweather:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
+        
         body {
-            font-family: Ghetto, gismo;
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom, #d1a3ff, #5e0acc);
             text-align: center;
             color: black;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
         header {
             display: flex;
             justify-content: space-between;
             padding: 20px;
         }
+        nav {
+            display: flex;
+            gap: 20px;
+        }
         nav a {
-            margin: 0 15px;
             color: black;
             text-decoration: none;
             font-weight: bold;
             cursor: pointer;
         }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-        }
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
         .main-heading {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
+            font-family: 'Playfair Display', serif;
             margin-top: 50px;
         }
         .button {
@@ -47,44 +44,107 @@
             border-radius: 20px;
             display: inline-block;
             margin-top: 20px;
+            cursor: pointer;
+            font-family: 'Merriweather', serif;
         }
-        .container {
+        .hidden {
+            display: none;
+        }
+        .section {
+            padding: 50px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .team-container {
             display: flex;
-            justify-content: space-around;
-            margin-top: 50px;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
         }
-        .box {
-            width: 30%;
-            height: 200px;
+        .team-member {
+            width: 250px;
             background: rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             padding: 20px;
             font-weight: bold;
+            font-family: 'Merriweather', serif;
+        }
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <header>
-        <div style="font-size: 24px; font-weight: bold; color: red;">MAVERICKS</div>
+        <div style="font-size: 24px; font-weight: bold; color: red; font-family: 'Playfair Display', serif;">MAVERICKS</div>
         <nav>
-            <div class="dropdown">
-                <a>Dashboard ▼</a>
-                <div class="dropdown-content">
-                    <a href="#rainfall">Rainfall Data</a><br>
-                    <a href="#locations">Locations</a>
-                </div>
-            </div>
             <a href="#records">Records</a>
-            <a href="#about">About us</a>
         </nav>
     </header>
     <div class="main-heading">Integrated Landslide Monitoring Early Warning System</div>
-    <a href="#summary" class="button">Know more →</a>
-    <div class="container">
-        <div class="box">Work Progress</div>
-        <div class="box">Collaborations</div>
-        <div class="box">Locations</div>
+    <div class="button" onclick="showDetails()">Know more →</div>
+    
+    <div id="details" class="section hidden">
+        <h2 style="font-family: 'Playfair Display', serif;">Project Overview</h2>
+        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>
+        
+        <h2 style="font-family: 'Playfair Display', serif;">Meet the Team</h2>
+        <div class="team-container">
+            <div class="team-member">
+                <img src="guide.jpg" alt="Guide">
+                <h3>Er. Nirmal John Joy</h3>
+                <p>Assistant Professor, Department of Civil Engineering<br>Saintgits College of Engineering</p>
+            </div>
+            <div class="team-member">
+                <img src="co-guide.jpg" alt="Co-Guide">
+                <h3>Er. Joe G Philip</h3>
+                <p>Assistant Professor, Department of Civil Engineering<br>Saintgits College of Engineering</p>
+            </div>
+        </div>
+        
+        <h2 style="font-family: 'Playfair Display', serif;">Core Members</h2>
+        <div class="team-container">
+            <div class="team-member">
+                <img src="jithin.jpg" alt="Jithin Joseph Loveson">
+                <h3>Jithin Joseph Loveson</h3>
+                <p>Saintgits College of Engineering</p>
+            </div>
+            <div class="team-member">
+                <img src="mervin.jpg" alt="Mervin Mathew Shibu">
+                <h3>Mervin Mathew Shibu</h3>
+                <p>Saintgits College of Engineering</p>
+            </div>
+            <div class="team-member">
+                <img src="noble.jpg" alt="Noble Sajan">
+                <h3>Noble Sajan</h3>
+                <p>Saintgits College of Engineering</p>
+            </div>
+        </div>
+        
+        <h2 style="font-family: 'Playfair Display', serif;">Joint Co-Partner</h2>
+        <div class="team-container">
+            <div class="team-member">
+                <img src="manu.jpg" alt="Manu M Kumar">
+                <h3>Manu M Kumar</h3>
+                <p>Saintgits College of Engineering</p>
+            </div>
+        </div>
     </div>
+    
+    <script>
+        function showDetails() {
+            document.getElementById('details').classList.remove('hidden');
+            document.getElementById('details').classList.add('visible');
+        }
+    </script>
 </body>
 </html>
-
