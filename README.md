@@ -1,11 +1,11 @@
-# Landslide-monitoring
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landslide Monitoring System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Merriweather:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');   
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Merriweather:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
+        
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to bottom, #d1a3ff, #5e0acc);
@@ -30,21 +30,8 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .main-heading {
-            font-size: 36px;
-            font-weight: bold;
-            font-family: 'Playfair Display', serif;
-            margin-top: 50px;
-        }
-        .button {
-            background: purple;
-            padding: 10px 20px;
-            color: white;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 20px;
-            cursor: pointer;
-            font-family: 'Merriweather', serif;
+        .main-content {
+            transition: opacity 0.5s ease-out;
         }
         .hidden {
             display: none;
@@ -76,6 +63,16 @@
             border-radius: 50%;
             object-fit: cover;
         }
+        .button {
+            background: purple;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 20px;
+            cursor: pointer;
+            font-family: 'Merriweather', serif;
+        }
     </style>
 </head>
 <body>
@@ -87,11 +84,15 @@
             <a href="#contact">Contact Details</a>
         </nav>
     </header>
-    <div class="main-heading">Integrated Landslide Monitoring Early Warning System</div>
-    <div class="button" onclick="showDetails()">Know more →</div>
+    <div id="main-content" class="main-content">
+        <div class="main-heading" style="font-size: 36px; font-weight: bold; font-family: 'Playfair Display', serif; margin-top: 50px;">Integrated Landslide Monitoring Early Warning System</div>
+        <div class="button" onclick="showDetails()">Know more →</div>
+    </div>
+    
     <div id="details" class="section hidden">
         <h2 style="font-family: 'Playfair Display', serif;">Project Overview</h2>
-        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities. Understanding the correlation can help to predict landslide occurrences and improve early warning systems, potentially saving lives and reducing property damage. This approach enables to detect and address issues, optimize performance, and make data-driven decisions on the go. The project aims to determine the relationship between rainfall intensity, slope angle and moisture content that triggers landslides and to develop a system that could give potential warning to landslides by continuously monitoring soil moisture levels and environmental factors like rainfall using PLAXIS 2D software and sensors like moisture sensor, inclinometer and optical rain sensor. The data obtained is stored in a structured database like MySQL for dynamic comparison, allowing for early landslide prediction based on the present threshold from the stimulation. This approach is crucial for enhancing resilience and optimizing land use planning in geotechnically sensitive areas.</p>      
+        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities. Understanding the correlation can help to predict landslide occurrences and improve early warning systems, potentially saving lives and reducing property damage. This approach enables to detect and address issues, optimize performance, and make data-driven decisions on the go. The project aims to determine the relationship between rainfall intensity, slope angle and moisture content that triggers landslides and to develop a system that could give potential warning to landslides by continuously monitoring soil moisture levels and environmental factors like rainfall using PLAXIS 2D software and sensors like moisture sensor, inclinometer and optical rain sensor. The data obtained is stored in a structured database like MySQL for dynamic comparison, allowing for early landslide prediction based on the present threshold from the stimulation. This approach is crucial for enhancing resilience and optimizing land use planning in geotechnically sensitive areas.</p>
+        
         <h2 style="font-family: 'Playfair Display', serif;">Meet the Team</h2>
         <div class="team-container">
             <div class="team-member">
@@ -137,11 +138,25 @@
                 <p>Saintgits College of Engineering</p>
             </div>
         </div>
+        <div class="button" onclick="goBack()">Click Back</div>
     </div>
+    
     <script>
         function showDetails() {
-            document.getElementById('details').classList.remove('hidden');
-            document.getElementById('details').classList.add('visible');
+            document.getElementById('main-content').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('main-content').classList.add('hidden');
+                document.getElementById('details').classList.remove('hidden');
+                document.getElementById('details').classList.add('visible');
+            }, 500);
+        }
+        function goBack() {
+            document.getElementById('details').classList.remove('visible');
+            setTimeout(() => {
+                document.getElementById('details').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                document.getElementById('main-content').style.opacity = '1';
+            }, 500);
         }
     </script>
 </body>
