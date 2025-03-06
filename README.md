@@ -2,79 +2,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landslide Monitoring System</title>
+    <title>Landslide Monitoring</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Merriweather:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
-        
         body {
-            font-family: 'Poppins', sans-serif;
-            background: black;
+            background-color: black;
             color: white;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
         }
-        header {
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
+            background-color: black;
+            border-bottom: 1px solid white;
         }
-        nav {
-            display: flex;
-            gap: 20px;
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-left: 20px;
         }
-        nav a {
+        .nav {
+            margin-right: 20px;
+        }
+        .nav a {
             color: white;
             text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+        .main-title {
+            text-align: center;
+            font-size: 28px;
             font-weight: bold;
-            cursor: pointer;
-            position: relative;
-        }
-        .main-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 50px;
             margin-top: 50px;
-        }
-        .left-text, .right-text {
-            width: 45%;
-            text-align: justify;
-        }
-        .section {
-            padding: 50px;
-            display: none;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-        .visible {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <header>
-        <div style="font-size: 24px; font-weight: bold; color: white; font-family: 'Playfair Display', serif;">MAVERICKS</div>
-        <nav>
-            <a href="#" onclick="showHome()">Home</a>
-            <a href="#" onclick="showSection('about')">About</a>
-            <a href="#" onclick="showSection('datas')">Datas</a>
-            <a href="#" onclick="showSection('gallery')">Gallery</a>
-            <a href="#" onclick="showSection('contact')">Contact Details</a>
+    <header class="header">
+        <div class="logo">MAVERICKS</div>
+        <nav class="nav">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#datas">Datas</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#contact">Contact Details</a>
         </nav>
     </header>
-    <div id="home" class="main-content visible">
-        <div class="left-text">
-            <h1 style="font-family: 'Playfair Display', serif; color: white;">Integrated Landslide Monitoring</h1>
-        </div>
-        <div class="right-text">
-            <h1 style="font-family: 'Playfair Display', serif; color: white;">and Early Warning System</h1>
-        </div>
-    </div>
+    <div class="main-title">Integrated Landslide Monitoring and Early Warning System</div>
     
     <script>
         function showSection(sectionId) {
