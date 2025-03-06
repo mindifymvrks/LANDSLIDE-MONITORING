@@ -8,7 +8,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to bottom, #d1a3ff, #5e0acc);
+            background: #FFC72C;
             text-align: center;
             color: black;
             margin: 0;
@@ -56,6 +56,9 @@
         .team-member {
             text-align: center;
             width: 250px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
         }
         .team-member img {
             width: 100px;
@@ -77,7 +80,7 @@
 </head>
 <body>
     <header>
-        <div style="font-size: 24px; font-weight: bold; color: red; font-family: 'Playfair Display', serif;">MAVERICKS</div>
+        <div style="font-size: 24px; font-weight: bold; color: white; font-family: 'Playfair Display', serif;">MAVERICKS</div>
         <nav>
             <a href="#dashboard">Dashboard</a>
             <a href="#records">Records</a>
@@ -85,13 +88,13 @@
         </nav>
     </header>
     <div id="main-content" class="main-content">
-        <div class="main-heading" style="font-size: 36px; font-weight: bold; font-family: 'Playfair Display', serif; margin-top: 50px;">Integrated Landslide Monitoring Early Warning System</div>
+        <div class="main-heading" style="font-size: 36px; font-weight: bold; font-family: 'Playfair Display', serif; margin-top: 50px; color: black;">Landslide Monitoring</div>
         <div class="button" onclick="showDetails()">Know more →</div>
     </div>
     
     <div id="details" class="section hidden">
         <h2 style="font-family: 'Playfair Display', serif;">Project Overview</h2>
-        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities. Understanding the correlation can help to predict landslide occurrences and improve early warning systems, potentially saving lives and reducing property damage. This approach enables to detect and address issues, optimize performance, and make data-driven decisions on the go. The project aims to determine the relationship between rainfall intensity, slope angle and moisture content that triggers landslides and to develop a system that could give potential warning to landslides by continuously monitoring soil moisture levels and environmental factors like rainfall using PLAXIS 2D software and sensors like moisture sensor, inclinometer and optical rain sensor. The data obtained is stored in a structured database like MySQL for dynamic comparison, allowing for early landslide prediction based on the present threshold from the stimulation. This approach is crucial for enhancing resilience and optimizing land use planning in geotechnically sensitive areas.</p>
+        <p style="font-family: 'Merriweather', serif;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>
         
         <h2 style="font-family: 'Playfair Display', serif;">Meet the Team</h2>
         <div class="team-container">
