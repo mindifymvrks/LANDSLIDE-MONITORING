@@ -151,11 +151,6 @@
             document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
         }
     </script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const repoNameElement = document.querySelector(".repo-name");
-    if (repoNameElement) {
-        repoNameElement.style.display = "none";
-    }
-});
 </body>
 </html>
+
