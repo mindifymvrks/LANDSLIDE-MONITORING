@@ -6,7 +6,7 @@
     <title>Landslide Monitoring System</title>
     <style>
         body {
-            font-family: Ghwtto, gismo;
+            font-family: Ghetto, gismo;
             background: linear-gradient(to bottom, #d1a3ff, #5e0acc);
             text-align: center;
             color: black;
