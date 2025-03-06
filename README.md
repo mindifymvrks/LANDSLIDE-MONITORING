@@ -32,9 +32,15 @@
             position: relative;
         }
         .main-content {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
             margin-top: 50px;
-            display: block;
+        }
+        .left-text, .right-text {
+            width: 45%;
+            text-align: justify;
         }
         .section {
             padding: 50px;
@@ -47,27 +53,6 @@
             display: block;
             opacity: 1;
             transform: translateY(0);
-        }
-        .team-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .team-member {
-            text-align: center;
-            width: 250px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            color: white;
-        }
-        .team-member img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
         }
     </style>
 </head>
@@ -83,57 +68,11 @@
         </nav>
     </header>
     <div id="home" class="main-content visible">
-        <h1 style="font-family: 'Playfair Display', serif; color: white;">Integrated Landslide Monitoring and Early Warning System</h1>
-    </div>
-    
-    <div id="about" class="section">
-        <h2 style="font-family: 'Playfair Display', serif; color: white;">Project Overview</h2>
-        <p style="font-family: 'Merriweather', serif; color: white;">India is experiencing an unprecedented increase in landslide occurrences, posing significant risks to infrastructure and communities... (Full description here)</p>
-        
-        <h2 style="font-family: 'Playfair Display', serif; color: white;">Meet the Team</h2>
-        <div class="team-container">
-            <div class="team-member">
-                <h3>Guide</h3>
-                <img src="guide.jpg" alt="Guide">
-                <p>Er. Nirmal John Joy</p>
-                <p>Assistant Professor, Department of Civil Engineering</p>
-                <p>Saintgits College of Engineering</p>
-            </div>
-            <div class="team-member">
-                <h3>Co-Guide</h3>
-                <img src="co-guide.jpg" alt="Co-Guide">
-                <p>Er. Joe G Philip</p>
-                <p>Assistant Professor, Department of Civil Engineering</p>
-                <p>Saintgits College of Engineering</p>
-            </div>
+        <div class="left-text">
+            <h1 style="font-family: 'Playfair Display', serif; color: white;">Integrated Landslide Monitoring</h1>
         </div>
-        <div class="team-container">
-            <div class="team-member">
-                <h3>Core Member</h3>
-                <img src="jithin.jpg" alt="Jithin Joseph Loveson">
-                <p>Jithin Joseph Loveson</p>
-                <p>Saintgits College of Engineering</p>
-            </div>
-            <div class="team-member">
-                <h3>Core Member</h3>
-                <img src="mervin.jpg" alt="Mervin Mathew Shibu">
-                <p>Mervin Mathew Shibu</p>
-                <p>Saintgits College of Engineering</p>
-            </div>
-            <div class="team-member">
-                <h3>Core Member</h3>
-                <img src="noble.jpg" alt="Noble Sajan">
-                <p>Noble Sajan</p>
-                <p>Saintgits College of Engineering</p>
-            </div>
-        </div>
-        <div class="team-container">
-            <div class="team-member">
-                <h3>Joint Co-Partner</h3>
-                <img src="manu.jpg" alt="Manu M Kumar">
-                <p>Manu M Kumar</p>
-                <p>Saintgits College of Engineering</p>
-            </div>
+        <div class="right-text">
+            <h1 style="font-family: 'Playfair Display', serif; color: white;">and Early Warning System</h1>
         </div>
     </div>
     
