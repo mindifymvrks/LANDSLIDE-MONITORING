@@ -86,6 +86,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            text-align: left;
         }
 
         .visible {
@@ -158,8 +159,37 @@
 
     <div id="about" class="section">
         <div class="content-box">
-            <h2>About</h2>
-            <p>Our system integrates rainfall and soil moisture data to predict landslides and issue alerts.</p>
+            <h2>About the Integrated Landslide Monitoring System</h2>
+            <p>Landslides are a growing concern in India, particularly in hilly regions where intense rainfall and unstable slopes pose a severe risk to infrastructure and human lives. Our project, the <strong>Integrated Landslide Monitoring and Early Warning System</strong>, is designed to address this issue by providing real-time monitoring and early warnings based on rainfall, soil moisture, and slope stability analysis.</p>
+            
+            <h3>Our Approach</h3>
+            <p>Our system integrates sensor-based data collection with geotechnical analysis to predict landslides before they occur. The project focuses on:</p>
+            <ul>
+                <li>✔ Real-time rainfall and soil moisture monitoring using sensors.</li>
+                <li>✔ Slope stability analysis with advanced modeling techniques like <strong>PLAXIS 2D</strong>.</li>
+                <li>✔ Database-driven prediction system that correlates real-time data with predefined safety factors.</li>
+                <li>✔ Automated early warning alerts when the <strong>Factor of Safety (FoS)</strong> falls below critical levels.</li>
+            </ul>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li>🔹 <strong>Live Data Collection</strong> – Using a <em>RainWise Tipping Bucket Rain Gauge</em> and soil moisture sensors to gather environmental data.</li>
+                <li>🔹 <strong>Predictive Analysis</strong> – Correlating real-time rainfall intensity with past landslide events for improved accuracy.</li>
+                <li>🔹 <strong>User-Friendly Interface</strong> – An interactive web-based platform for monitoring data and receiving alerts.</li>
+                <li>🔹 <strong>Sustainable Disaster Management</strong> – Helping authorities and communities take preventive measures before landslides occur.</li>
+            </ul>
+
+            <h3>Impact and Future Scope</h3>
+            <p>Our project aligns with the <strong>United Nations Sustainable Development Goals (SDG 9, 11, 13, 15, and 17)</strong> by promoting <em>resilient infrastructure, sustainable communities, and climate action</em>. In the future, we aim to:</p>
+            <ul>
+                <li>✅ Expand the system to include more site-specific parameters.</li>
+                <li>✅ Integrate AI-based prediction models for enhanced accuracy.</li>
+                <li>✅ Develop a mobile app for instant alerts and field monitoring.</li>
+            </ul>
+
+            <h3>Our Vision</h3>
+            <p>With this system, we hope to mitigate the risks of landslides, minimize economic losses, and enhance community safety by providing a reliable early warning mechanism.</p>
+            <p><strong><em>"Prediction is better than redemption."</em></strong></p>
         </div>
     </div>
 
@@ -180,8 +210,14 @@
     <div id="contact" class="section">
         <div class="content-box">
             <h2>Contact Details</h2>
-            <p>Email: support@mavericks.com</p>
-            <p>Phone: +91 98765 43210</p>
+            <p>Email:nirmal.john@saintgits.org</p>
+             <ul>
+                <li>jithin.cea2125@saintgits.org</li>
+                <li>manu.ceb2125@saintgits.org</li>
+                <li>mervin.ceb2125@saintgits.org</li>
+                <li>noble.ceb2125@saintgits.org</li>
+             </ul>  
+            <p>Phone: +91 8590832820</p>
         </div>
     </div>
 
@@ -199,4 +235,3 @@
 
 </body>
 </html>
-
