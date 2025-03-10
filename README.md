@@ -46,6 +46,7 @@
             font-size: 18px;
             position: relative;
             transition: color 0.3s ease-in-out;
+            cursor: pointer;
         }
 
         .nav a:hover {
@@ -181,7 +182,7 @@
         </div>
     </div>
 
-    <div id="datas" class="section">
+    <div id="datas" class="section visible">
         <div class="content-box">
             <h2>Live Data</h2>
             <p>Below is the real-time rainfall monitoring data:</p>
@@ -244,5 +245,3 @@
 
 </body>
 </html>
-
-
