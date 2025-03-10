@@ -105,6 +105,24 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .data-table th {
+            background-color: #ffcc00;
+            color: black;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header {
@@ -160,43 +178,30 @@
     <div id="about" class="section">
         <div class="content-box">
             <h2>About the Integrated Landslide Monitoring System</h2>
-            <p>Landslides are a growing concern in India, particularly in hilly regions where intense rainfall and unstable slopes pose a severe risk to infrastructure and human lives. Our project, the <strong>Integrated Landslide Monitoring and Early Warning System</strong>, is designed to address this issue by providing real-time monitoring and early warnings based on rainfall, soil moisture, and slope stability analysis.</p>
-            
-            <h3>Our Approach</h3>
-            <p>Our system integrates sensor-based data collection with geotechnical analysis to predict landslides before they occur. The project focuses on:</p>
-            <ul>
-                <li>✔ Real-time rainfall and soil moisture monitoring using sensors.</li>
-                <li>✔ Slope stability analysis with advanced modeling techniques like <strong>PLAXIS 2D</strong>.</li>
-                <li>✔ Database-driven prediction system that correlates real-time data with predefined safety factors.</li>
-                <li>✔ Automated early warning alerts when the <strong>Factor of Safety (FoS)</strong> falls below critical levels.</li>
-            </ul>
-
-            <h3>Key Features</h3>
-            <ul>
-                <li>🔹 <strong>Live Data Collection</strong> – Using a <em>RainWise Tipping Bucket Rain Gauge</em> and soil moisture sensors to gather environmental data.</li>
-                <li>🔹 <strong>Predictive Analysis</strong> – Correlating real-time rainfall intensity with past landslide events for improved accuracy.</li>
-                <li>🔹 <strong>User-Friendly Interface</strong> – An interactive web-based platform for monitoring data and receiving alerts.</li>
-                <li>🔹 <strong>Sustainable Disaster Management</strong> – Helping authorities and communities take preventive measures before landslides occur.</li>
-            </ul>
-
-            <h3>Impact and Future Scope</h3>
-            <p>Our project aligns with the <strong>United Nations Sustainable Development Goals (SDG 9, 11, 13, 15, and 17)</strong> by promoting <em>resilient infrastructure, sustainable communities, and climate action</em>. In the future, we aim to:</p>
-            <ul>
-                <li>✅ Expand the system to include more site-specific parameters.</li>
-                <li>✅ Integrate AI-based prediction models for enhanced accuracy.</li>
-                <li>✅ Develop a mobile app for instant alerts and field monitoring.</li>
-            </ul>
-
-            <h3>Our Vision</h3>
-            <p>With this system, we hope to mitigate the risks of landslides, minimize economic losses, and enhance community safety by providing a reliable early warning mechanism.</p>
-            <p><strong><em>"Prediction is better than redemption."</em></strong></p>
+            <p>Landslides are a growing concern in India...</p>
         </div>
     </div>
 
     <div id="datas" class="section">
         <div class="content-box">
-            <h2>Datas</h2>
-            <p>Live data of rainfall levels and factor of safety values will be displayed here.</p>
+            <h2>Live Data</h2>
+            <p>Below is the real-time rainfall monitoring data:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Rainfall Levels (mm)</th>
+                        <th>Current Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>50 mm</td>
+                        <td>Stable</td>
+                    </tr>
+                    <!-- More rows will be added dynamically in real-time -->
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -204,18 +209,24 @@
         <div class="content-box">
             <h2>Gallery</h2>
             <p>Images and diagrams related to landslide monitoring.</p>
-            <div class="image-gallery">
-                <img src="6.jpg" alt="Bible of Surface" style="width:100%; max-width:600px; margin:10px 0;">
-                <img src="10.jpg" alt="Katutaya Kuru Wayaki" style="width:100%; max-width:600px; margin:10px 0;">
-            </div>
         </div>
     </div>
 
     <div id="contact" class="section">
         <div class="content-box">
             <h2>Contact Details</h2>
-            <p>Email: support@mavericks.com</p>
-            <p>Phone: +91 98765 43210</p>
+            <p><strong>Email:</strong></p>
+            <p>nirmal.john@saintgits.org</p>
+            <p>jithin.cea2125@saintgits.org</p>
+            <p>manu.ceb2125@saintgits.org</p>
+            <p>mervin.ceb2125@saintgits.org</p>
+            <p>noble.ceb2125@saintgits.org</p>
+
+            <p><strong>Phone Numbers:</strong></p>
+            <p>+91 95266 08654</p>
+            <p>+91 89211 23469</p>
+            <p>+91 85908 32820</p>
+            <p>+91 75580 69423</p>
         </div>
     </div>
 
