@@ -177,7 +177,36 @@
     <div id="about" class="section">
         <div class="content-box">
             <h2>About the Integrated Landslide Monitoring System</h2>
-            <p>Landslides are a growing concern in India, particularly in hilly regions where intense rainfall and unstable slopes pose a severe risk to infrastructure and human lives...</p>
+            <p>Landslides are a growing concern in India, particularly in hilly regions where intense rainfall and unstable slopes pose a severe risk to infrastructure and human lives. Our project, the <strong>Integrated Landslide Monitoring and Early Warning System</strong>, is designed to address this issue by providing real-time monitoring and early warnings based on rainfall, soil moisture, and slope stability analysis.</p>
+
+            <h3>Our Approach</h3>
+            <p>Our system integrates sensor-based data collection with geotechnical analysis to predict landslides before they occur. The project focuses on:</p>
+            <ul>
+                <li>✔ Real-time rainfall and soil moisture monitoring using sensors.</li>
+                <li>✔ Slope stability analysis with advanced modeling techniques like PLAXIS 2D.</li>
+                <li>✔ Database-driven prediction system that correlates real-time data with predefined safety factors.</li>
+                <li>✔ Automated early warning alerts when the Factor of Safety (FoS) falls below critical levels.</li>
+            </ul>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li>🔹 Live Data Collection – Using a RainWise Tipping Bucket Rain Gauge and soil moisture sensors to gather environmental data.</li>
+                <li>🔹 Predictive Analysis – Correlating real-time rainfall intensity with past landslide events for improved accuracy.</li>
+                <li>🔹 User-Friendly Interface – An interactive web-based platform for monitoring data and receiving alerts.</li>
+                <li>🔹 Sustainable Disaster Management – Helping authorities and communities take preventive measures before landslides occur.</li>
+            </ul>
+
+            <h3>Impact and Future Scope</h3>
+            <p>Our project aligns with the United Nations Sustainable Development Goals (SDG 9, 11, 13, 15, and 17) by promoting resilient infrastructure, sustainable communities, and climate action. In the future, we aim to:</p>
+            <ul>
+                <li>✅ Expand the system to include more site-specific parameters.</li>
+                <li>✅ Integrate AI-based prediction models for enhanced accuracy.</li>
+                <li>✅ Develop a mobile app for instant alerts and field monitoring.</li>
+            </ul>
+
+            <h3>Our Vision</h3>
+            <p>With this system, we hope to mitigate the risks of landslides, minimize economic losses, and enhance community safety by providing a reliable early warning mechanism.</p>
+            <p><em>"Prediction is better than redemption."</em></p>
         </div>
     </div>
 
@@ -214,7 +243,6 @@
     <div id="contact" class="section">
         <div class="content-box">
             <h2>Contact Details</h2>
-            
             <p><strong>Email:</strong></p>
             <p>nirmal.john@saintgits.org</p>
             <p>jithin.cea2125@saintgits.org</p>
