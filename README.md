@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,7 +46,6 @@
             font-size: 18px;
             position: relative;
             transition: color 0.3s ease-in-out;
-            cursor: pointer;
         }
 
         .nav a:hover {
@@ -123,9 +121,37 @@
             background-color: #ffcc00;
             color: black;
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .nav {
+                margin-top: 10px;
+            }
+
+            .nav a {
+                font-size: 16px;
+                margin: 5px;
+            }
+
+            .main-title {
+                font-size: 24px;
+                margin-top: 80px;
+            }
+
+            .section {
+                padding: 40px 10px;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Header -->
     <header class="header">
         <div class="logo">MAVERICKS</div>
         <nav class="nav">
@@ -137,8 +163,10 @@
         </nav>
     </header>
 
+    <!-- Page Title -->
     <div class="main-title">Integrated Landslide Monitoring and Early Warning System</div>
 
+    <!-- Sections -->
     <div id="home" class="section visible">
         <div class="content-box">
             <h2>Welcome to the Landslide Monitoring System</h2>
@@ -157,6 +185,7 @@
         <div class="content-box">
             <h2>Live Data</h2>
             <p>Below is the real-time rainfall monitoring data:</p>
+
             <table class="data-table">
                 <thead>
                     <tr>
@@ -169,8 +198,35 @@
                         <td>50 mm</td>
                         <td>Stable</td>
                     </tr>
+                    <!-- More rows will be added dynamically in real-time -->
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div id="gallery" class="section">
+        <div class="content-box">
+            <h2>Gallery</h2>
+            <p>Images and diagrams related to landslide monitoring.</p>
+        </div>
+    </div>
+
+    <div id="contact" class="section">
+        <div class="content-box">
+            <h2>Contact Details</h2>
+            
+            <p><strong>Email:</strong></p>
+            <p>nirmal.john@saintgits.org</p>
+            <p>jithin.cea2125@saintgits.org</p>
+            <p>manu.ceb2125@saintgits.org</p>
+            <p>mervin.ceb2125@saintgits.org</p>
+            <p>noble.ceb2125@saintgits.org</p>
+
+            <p><strong>Phone Numbers:</strong></p>
+            <p>+91 95266 08654</p>
+            <p>+91 89211 23469</p>
+            <p>+91 85908 32820</p>
+            <p>+91 75580 69423</p>
         </div>
     </div>
 
@@ -179,10 +235,12 @@
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('visible');
             });
+
             setTimeout(() => {
                 document.getElementById(sectionId).classList.add('visible');
             }, 100);
         }
     </script>
+
 </body>
 </html>
