@@ -245,16 +245,17 @@
             <h2>Contact Details</h2>
             <p><strong>Email:</strong></p>
             <p>nirmal.john@saintgits.org</p>
+            <p>joe.philip@saintgits.org</p>
             <p>jithin.cea2125@saintgits.org</p>
             <p>manu.ceb2125@saintgits.org</p>
             <p>mervin.ceb2125@saintgits.org</p>
             <p>noble.ceb2125@saintgits.org</p>
 
             <p><strong>Phone Numbers:</strong></p>
-            <p>+91 95266 08654</p>
-            <p>+91 89211 23469</p>
-            <p>+91 85908 32820</p>
-            <p>+91 75580 69423</p>
+            <p> Jithin Joseph Loveson :- +91 95266 08654</p>
+            <p> Manu M Kumar          :- +91 89211 23469</p>
+            <p> Mervin M Shibu        :- +91 85908 32820</p>
+            <p> Noble Sajan           :- +91 75580 69423</p>
         </div>
     </div>
 
