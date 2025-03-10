@@ -104,6 +104,24 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .data-table th {
+            background-color: #ffcc00;
+            color: black;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .header {
@@ -160,25 +178,29 @@
         <div class="content-box">
             <h2>About the Integrated Landslide Monitoring System</h2>
             <p>Landslides are a growing concern in India, particularly in hilly regions where intense rainfall and unstable slopes pose a severe risk to infrastructure and human lives...</p>
-            
-            <h3>Our Approach</h3>
-            <p>Our system integrates sensor-based data collection with geotechnical analysis to predict landslides before they occur. The project focuses on:</p>
-            <ul>
-                <li>✔ Real-time rainfall and soil moisture monitoring using sensors.</li>
-                <li>✔ Slope stability analysis with advanced modeling techniques like <strong>PLAXIS 2D</strong>.</li>
-                <li>✔ Database-driven prediction system that correlates real-time data with predefined safety factors.</li>
-                <li>✔ Automated early warning alerts when the <strong>Factor of Safety (FoS)</strong> falls below critical levels.</li>
-            </ul>
-
-            <h3>Our Vision</h3>
-            <p>With this system, we hope to mitigate the risks of landslides, minimize economic losses, and enhance community safety by providing a reliable early warning mechanism.</p>
         </div>
     </div>
 
     <div id="datas" class="section">
         <div class="content-box">
-            <h2>Datas</h2>
-            <p>Live data of rainfall levels and factor of safety values will be displayed here.</p>
+            <h2>Live Data</h2>
+            <p>Below is the real-time rainfall monitoring data:</p>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Rainfall (mm)</th>
+                        <th>Current Slope Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>50 mm</td>
+                        <td>Stable</td>
+                    </tr>
+                    <!-- More rows will be added dynamically in real-time -->
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -222,3 +244,4 @@
 
 </body>
 </html>
+
