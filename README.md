@@ -204,20 +204,18 @@
         <div class="content-box">
             <h2>Gallery</h2>
             <p>Images and diagrams related to landslide monitoring.</p>
+            <div class="image-gallery">
+                <img src="6.jpg" alt="Bible of Surface" style="width:100%; max-width:600px; margin:10px 0;">
+                <img src="10.jpg" alt="Katutaya Kuru Wayaki" style="width:100%; max-width:600px; margin:10px 0;">
+            </div>
         </div>
     </div>
 
     <div id="contact" class="section">
         <div class="content-box">
             <h2>Contact Details</h2>
-            <p>Email:nirmal.john@saintgits.org</p>
-             <ul>
-                <li>jithin.cea2125@saintgits.org</li>
-                <li>manu.ceb2125@saintgits.org</li>
-                <li>mervin.ceb2125@saintgits.org</li>
-                <li>noble.ceb2125@saintgits.org</li>
-             </ul>  
-            <p>Phone: +91 8590832820</p>
+            <p>Email: support@mavericks.com</p>
+            <p>Phone: +91 98765 43210</p>
         </div>
     </div>
 
