@@ -46,11 +46,27 @@
             font-size: 18px;
             position: relative;
             transition: color 0.3s ease-in-out;
-            cursor: pointer;
         }
 
         .nav a:hover {
             color: #ffcc00;
+        }
+
+        .nav a::after {
+            content: "";
+            display: block;
+            height: 2px;
+            width: 0;
+            background: #ffcc00;
+            transition: width 0.3s ease-in-out;
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav a:hover::after {
+            width: 100%;
         }
 
         /* Main Title */
@@ -60,25 +76,24 @@
             margin-top: 100px;
         }
 
-        /* View Live Data Button */
+        /* Button Styles */
         .live-data-btn {
             display: inline-block;
             margin-top: 20px;
             padding: 15px 30px;
             font-size: 20px;
             font-weight: bold;
-            color: #0d0d0d;
+            color: white;
             background: #ffcc00;
             border: none;
-            border-radius: 30px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.6);
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
         }
 
         .live-data-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.9);
+            background: #e6b800;
         }
 
         /* Section Styling */
@@ -99,18 +114,28 @@
             transform: translateY(0);
         }
 
-        /* Glassmorphism Effect for Sections */
-        .content-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
         }
+
+        .data-table th, .data-table td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .data-table th {
+            background-color: #ffcc00;
+            color: black;
+        }
+
     </style>
 </head>
 <body>
+
     <!-- Header -->
     <header class="header">
         <div class="logo">MAVERICKS</div>
@@ -123,22 +148,12 @@
         </nav>
     </header>
 
-    <!-- Page Title (Only for Home Page) -->
-    <div class="main-title">Integrated Landslide Monitoring and Early Warning System</div>
-    <button class="live-data-btn" onclick="showSection('datas')">VIEW LIVE DATA</button>
-
-    <!-- Sections -->
+    <!-- Homepage -->
     <div id="home" class="section visible">
         <div class="content-box">
-            <h2>Welcome to the Landslide Monitoring System</h2>
-            <p>This system provides real-time landslide monitoring and early warnings to ensure safety.</p>
-        </div>
-    </div>
-
-    <div id="about" class="section">
-        <div class="content-box">
-            <h2>About the Integrated Landslide Monitoring System</h2>
-            <p>Our project provides real-time monitoring of landslide-prone areas.</p>
+            <h2>Integrated Landslide Monitoring and Early Warning System</h2>
+            <p>Welcome to the Landslide Monitoring System. This system provides real-time landslide monitoring and early warnings to ensure safety.</p>
+            <button class="live-data-btn" onclick="showSection('datas')">VIEW LIVE DATA</button>
         </div>
     </div>
 
@@ -146,20 +161,21 @@
         <div class="content-box">
             <h2>Live Data</h2>
             <p>Below is the real-time rainfall monitoring data:</p>
-        </div>
-    </div>
 
-    <div id="gallery" class="section">
-        <div class="content-box">
-            <h2>Gallery</h2>
-            <p>Images and diagrams related to landslide monitoring.</p>
-        </div>
-    </div>
-
-    <div id="contact" class="section">
-        <div class="content-box">
-            <h2>Contact Details</h2>
-            <p>Email: contact@example.com</p>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Rainfall (mm)</th>
+                        <th>Slope Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>50</td>
+                        <td>Stable</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -172,10 +188,8 @@
             setTimeout(() => {
                 document.getElementById(sectionId).classList.add('visible');
             }, 100);
-
-            // Smooth scroll to the section
-            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         }
     </script>
+
 </body>
 </html>
