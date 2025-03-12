@@ -76,24 +76,21 @@
             margin-top: 100px;
         }
 
-        /* Button Styles */
-        .live-data-btn {
-            display: inline-block;
+        /* View Live Data Button */
+        .view-data-button {
             margin-top: 20px;
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-            background: #ffcc00;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ffcc00;
+            color: black;
             border: none;
-            border-radius: 10px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+            transition: background-color 0.3s ease-in-out;
         }
 
-        .live-data-btn:hover {
-            transform: scale(1.1);
-            background: #e6b800;
+        .view-data-button:hover {
+            background-color: #e6b800;
         }
 
         /* Section Styling */
@@ -114,6 +111,16 @@
             transform: translateY(0);
         }
 
+        /* Glassmorphism Effect for Sections */
+        .content-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
         /* Table Styles */
         .data-table {
             width: 100%;
@@ -132,6 +139,31 @@
             color: black;
         }
 
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .nav {
+                margin-top: 10px;
+            }
+
+            .nav a {
+                font-size: 16px;
+                margin: 5px;
+            }
+
+            .main-title {
+                font-size: 24px;
+                margin-top: 80px;
+            }
+
+            .section {
+                padding: 40px 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -148,12 +180,52 @@
         </nav>
     </header>
 
-    <!-- Homepage -->
+    <!-- Page Title -->
+    <div class="main-title">Integrated Landslide Monitoring and Early Warning System</div>
+
+    <!-- Sections -->
     <div id="home" class="section visible">
         <div class="content-box">
-            <h2>Integrated Landslide Monitoring and Early Warning System</h2>
-            <p>Welcome to the Landslide Monitoring System. This system provides real-time landslide monitoring and early warnings to ensure safety.</p>
-            <button class="live-data-btn" onclick="showSection('datas')">VIEW LIVE DATA</button>
+            <h2>Welcome to the Landslide Monitoring System</h2>
+            <p>This system provides real-time landslide monitoring and early warnings to ensure safety.</p>
+            <!-- VIEW LIVE DATA Button -->
+            <button class="view-data-button" onclick="showSection('datas')">VIEW LIVE DATA</button>
+        </div>
+    </div>
+
+    <div id="about" class="section">
+        <div class="content-box">
+            <h2>About the Integrated Landslide Monitoring System</h2>
+            <p>Landslides are a growing concern in India, particularly in hilly regions where intense rainfall and unstable slopes pose a severe risk to infrastructure and human lives. Our project, the <strong>Integrated Landslide Monitoring and Early Warning System</strong>, is designed to address this issue by providing real-time monitoring and early warnings based on rainfall, soil moisture, and slope stability analysis.</p>
+
+            <h3>Our Approach</h3>
+            <p>Our system integrates sensor-based data collection with geotechnical analysis to predict landslides before they occur. The project focuses on:</p>
+            <ul>
+                <li>✔ Real-time rainfall and soil moisture monitoring using sensors.</li>
+                <li>✔ Slope stability analysis with advanced modeling techniques like PLAXIS 2D.</li>
+                <li>✔ Database-driven prediction system that correlates real-time data with predefined safety factors.</li>
+                <li>✔ Automated early warning alerts when the Factor of Safety (FoS) falls below critical levels.</li>
+            </ul>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li>🔹 Live Data Collection – Using a RainWise Tipping Bucket Rain Gauge and soil moisture sensors to gather environmental data.</li>
+                <li>🔹 Predictive Analysis – Correlating real-time rainfall intensity with past landslide events for improved accuracy.</li>
+                <li>🔹 User-Friendly Interface – An interactive web-based platform for monitoring data and receiving alerts.</li>
+                <li>🔹 Sustainable Disaster Management – Helping authorities and communities take preventive measures before landslides occur.</li>
+            </ul>
+
+            <h3>Impact and Future Scope</h3>
+            <p>Our project aligns with the United Nations Sustainable Development Goals (SDG 9, 11, 13, 15, and 17) by promoting resilient infrastructure, sustainable communities, and climate action. In the future, we aim to:</p>
+            <ul>
+                <li>✅ Expand the system to include more site-specific parameters.</li>
+                <li>✅ Integrate AI-based prediction models for enhanced accuracy.</li>
+                <li>✅ Develop a mobile app for instant alerts and field monitoring.</li>
+            </ul>
+
+            <h3>Our Vision</h3>
+            <p>With this system, we hope to mitigate the risks of landslides, minimize economic losses, and enhance community safety by providing a reliable early warning mechanism.</p>
+            <p><em>"Prediction is better than redemption."</em></p>
         </div>
     </div>
 
@@ -166,16 +238,43 @@
                 <thead>
                     <tr>
                         <th>Rainfall (mm)</th>
-                        <th>Slope Status</th>
+                        <th>Current Slope Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>50</td>
+                        <td>50 mm</td>
                         <td>Stable</td>
                     </tr>
+                    <!-- More rows will be added dynamically in real-time -->
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div id="gallery" class="section">
+        <div class="content-box">
+            <h2>Gallery</h2>
+            <p>Images and diagrams related to landslide monitoring.</p>
+        </div>
+    </div>
+
+    <div id="contact" class="section">
+        <div class="content-box">
+            <h2>Contact Details</h2>
+            <p><strong>Email:</strong></p>
+            <p>nirmal.john@saintgits.org</p>
+            <p>joe.philip@saintgits.org</p>
+            <p>jithin.cea2125@saintgits.org</p>
+            <p>manu.ceb2125@saintgits.org</p>
+            <p>mervin.ceb2125@saintgits.org</p>
+            <p>noble.ceb2125@saintgits.org</p>
+
+            <p><strong>Phone Numbers:</strong></p>
+            <p> Jithin Joseph Loveson :- +91 95266 08654</p>
+            <p> Manu M Kumar          :- +91 89211 23469</p>
+            <p> Mervin M Shibu        :- +91 85908 32820</p>
+            <p> Noble Sajan           :- +91 75580 69423</p>
         </div>
     </div>
 
