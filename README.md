@@ -78,19 +78,34 @@
 
         /* View Live Data Button */
         .view-data-button {
-            margin-top: 20px;
-            padding: 10px 20px;
+            margin-top: 30px;
+            padding: 15px 30px;
             font-size: 18px;
             background-color: #ffcc00;
             color: black;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            animation: pulse 2s infinite;
         }
 
         .view-data-button:hover {
             background-color: #e6b800;
+            transform: scale(1.05);
+        }
+
+        /* Button Animation */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
         }
 
         /* Section Styling */
@@ -162,6 +177,11 @@
 
             .section {
                 padding: 40px 10px;
+            }
+
+            .view-data-button {
+                padding: 12px 24px;
+                font-size: 16px;
             }
         }
     </style>
