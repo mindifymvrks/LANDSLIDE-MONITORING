@@ -46,6 +46,7 @@
             font-size: 18px;
             position: relative;
             transition: color 0.3s ease-in-out;
+            cursor: pointer;
         }
 
         .nav a:hover {
@@ -74,38 +75,6 @@
             font-size: 32px;
             font-weight: bold;
             margin-top: 100px;
-        }
-
-        /* View Live Data Button */
-        .view-data-button {
-            margin-top: 30px;
-            padding: 15px 30px;
-            font-size: 18px;
-            background-color: #ffcc00;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-            animation: pulse 2s infinite;
-        }
-
-        .view-data-button:hover {
-            background-color: #e6b800;
-            transform: scale(1.05);
-        }
-
-        /* Button Animation */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
         }
 
         /* Section Styling */
@@ -178,11 +147,6 @@
             .section {
                 padding: 40px 10px;
             }
-
-            .view-data-button {
-                padding: 12px 24px;
-                font-size: 16px;
-            }
         }
     </style>
 </head>
@@ -208,48 +172,17 @@
         <div class="content-box">
             <h2>Welcome to the Landslide Monitoring System</h2>
             <p>This system provides real-time landslide monitoring and early warnings to ensure safety.</p>
-            <!-- VIEW LIVE DATA Button -->
-            <button class="view-data-button" onclick="showSection('datas')">VIEW LIVE DATA</button>
         </div>
     </div>
 
     <div id="about" class="section">
         <div class="content-box">
             <h2>About the Integrated Landslide Monitoring System</h2>
-            <p>Landslides are a growing concern in India, particularly in hilly regions where intense rainfall and unstable slopes pose a severe risk to infrastructure and human lives. Our project, the <strong>Integrated Landslide Monitoring and Early Warning System</strong>, is designed to address this issue by providing real-time monitoring and early warnings based on rainfall, soil moisture, and slope stability analysis.</p>
-
-            <h3>Our Approach</h3>
-            <p>Our system integrates sensor-based data collection with geotechnical analysis to predict landslides before they occur. The project focuses on:</p>
-            <ul>
-                <li>✔ Real-time rainfall and soil moisture monitoring using sensors.</li>
-                <li>✔ Slope stability analysis with advanced modeling techniques like PLAXIS 2D.</li>
-                <li>✔ Database-driven prediction system that correlates real-time data with predefined safety factors.</li>
-                <li>✔ Automated early warning alerts when the Factor of Safety (FoS) falls below critical levels.</li>
-            </ul>
-
-            <h3>Key Features</h3>
-            <ul>
-                <li>🔹 Live Data Collection – Using a RainWise Tipping Bucket Rain Gauge and soil moisture sensors to gather environmental data.</li>
-                <li>🔹 Predictive Analysis – Correlating real-time rainfall intensity with past landslide events for improved accuracy.</li>
-                <li>🔹 User-Friendly Interface – An interactive web-based platform for monitoring data and receiving alerts.</li>
-                <li>🔹 Sustainable Disaster Management – Helping authorities and communities take preventive measures before landslides occur.</li>
-            </ul>
-
-            <h3>Impact and Future Scope</h3>
-            <p>Our project aligns with the United Nations Sustainable Development Goals (SDG 9, 11, 13, 15, and 17) by promoting resilient infrastructure, sustainable communities, and climate action. In the future, we aim to:</p>
-            <ul>
-                <li>✅ Expand the system to include more site-specific parameters.</li>
-                <li>✅ Integrate AI-based prediction models for enhanced accuracy.</li>
-                <li>✅ Develop a mobile app for instant alerts and field monitoring.</li>
-            </ul>
-
-            <h3>Our Vision</h3>
-            <p>With this system, we hope to mitigate the risks of landslides, minimize economic losses, and enhance community safety by providing a reliable early warning mechanism.</p>
-            <p><em>"Prediction is better than redemption."</em></p>
+            <p>Landslides are a growing concern in India, particularly in hilly regions where intense rainfall and unstable slopes pose a severe risk to infrastructure and human lives...</p>
         </div>
     </div>
 
-    <div id="datas" class="section">
+    <div id="datas" class="section visible">
         <div class="content-box">
             <h2>Live Data</h2>
             <p>Below is the real-time rainfall monitoring data:</p>
@@ -282,19 +215,19 @@
     <div id="contact" class="section">
         <div class="content-box">
             <h2>Contact Details</h2>
+            
             <p><strong>Email:</strong></p>
             <p>nirmal.john@saintgits.org</p>
-            <p>joe.philip@saintgits.org</p>
             <p>jithin.cea2125@saintgits.org</p>
             <p>manu.ceb2125@saintgits.org</p>
             <p>mervin.ceb2125@saintgits.org</p>
             <p>noble.ceb2125@saintgits.org</p>
 
             <p><strong>Phone Numbers:</strong></p>
-            <p> Jithin Joseph Loveson :- +91 95266 08654</p>
-            <p> Manu M Kumar          :- +91 89211 23469</p>
-            <p> Mervin M Shibu        :- +91 85908 32820</p>
-            <p> Noble Sajan           :- +91 75580 69423</p>
+            <p>+91 95266 08654</p>
+            <p>+91 89211 23469</p>
+            <p>+91 85908 32820</p>
+            <p>+91 75580 69423</p>
         </div>
     </div>
 
