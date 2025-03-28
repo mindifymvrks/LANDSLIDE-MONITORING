@@ -25,15 +25,27 @@
 </head>
 <body>
     <h2>Spreadsheet Data</h2>
-    <table id="data-table">
-    </table>
+    <p id="status">Loading data...</p>
+    <table id="data-table"></table>
     <script>
         const url = "https://script.google.com/macros/s/AKfycbzldXn8izlLNKwFrzs6MXXRmfqVsWhxCvFyEmLIIktZgeHY2zX2nr5mitWRxjd7GmIp9w/exec";
         
         fetch(url)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 let table = document.getElementById("data-table");
+                let status = document.getElementById("status");
+                status.style.display = "none";
+                
+                if (!Array.isArray(data) || data.length === 0) {
+                    table.innerHTML = "<tr><td>No data available</td></tr>";
+                    return;
+                }
                 
                 // Create table headers
                 let headerRow = document.createElement("tr");
@@ -55,7 +67,10 @@
                     table.appendChild(tr);
                 });
             })
-            .catch(error => console.error("Error fetching data:", error));
+            .catch(error => {
+                document.getElementById("status").textContent = "Failed to load data: " + error.message;
+                console.error("Error fetching data:", error);
+            });
     </script>
 </body>
 </html>
