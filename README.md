@@ -3,45 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rainfall Warning System</title>
+    <title>Spreadsheet Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 20px;
         }
-        #warning {
-            color: red;
-            font-size: 24px;
-            font-weight: bold;
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
-    <h1>Rainfall Monitoring System</h1>
-    <p id="status">Fetching data...</p>
-    <p id="warning"></p>
-    
+    <h2>Spreadsheet Data</h2>
+    <table id="data-table">
+    </table>
     <script>
-        async function fetchRainfallData() {
-            const url = "https://script.google.com/macros/s/AKfycbzldXn8izlLNKwFrzs6MXXRmfqVsWhxCvFyEmLIIktZgeHY2zX2nr5mitWRxjd7GmIp9w/exec";
-            try {
-                let response = await fetch(url);
-                let data = await response.json();
-                let totalRainfall = data.filter(entry => entry === "YES").length * 10;
+        const url = "https://script.google.com/macros/s/AKfycbzldXn8izlLNKwFrzs6MXXRmfqVsWhxCvFyEmLIIktZgeHY2zX2nr5mitWRxjd7GmIp9w/exec";
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let table = document.getElementById("data-table");
                 
-                document.getElementById("status").textContent = `Accumulated Rainfall: ${totalRainfall} mm`;
+                // Create table headers
+                let headerRow = document.createElement("tr");
+                data[0].forEach(header => {
+                    let th = document.createElement("th");
+                    th.textContent = header;
+                    headerRow.appendChild(th);
+                });
+                table.appendChild(headerRow);
                 
-                if (totalRainfall > 120) {
-                    document.getElementById("warning").textContent = "Landslide Warning!";
-                }
-            } catch (error) {
-                document.getElementById("status").textContent = "Error fetching data.";
-                console.error("Error:", error);
-            }
-        }
-
-        fetchRainfallData();
+                // Create table rows
+                data.slice(1).forEach(row => {
+                    let tr = document.createElement("tr");
+                    row.forEach(cell => {
+                        let td = document.createElement("td");
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                });
+            })
+            .catch(error => console.error("Error fetching data:", error));
     </script>
 </body>
 </html>
