@@ -38,6 +38,14 @@
             color: #dc3545;
             font-weight: bold;
         }
+        .debug-info {
+            font-family: monospace;
+            font-size: 0.8em;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -82,6 +90,10 @@
         <div class="text-center text-muted">
             <small>Auto-refreshing every 0.5 seconds</small>
         </div>
+        <div class="debug-info">
+            <strong>Debug Information:</strong>
+            <div id="debugOutput">Waiting for first data fetch...</div>
+        </div>
     </div>
 
     <script>
@@ -95,6 +107,7 @@
         const loadingSpinner = document.getElementById("loadingSpinner");
         const errorMessage = document.getElementById("errorMessage");
         const noDataMessage = document.getElementById("noDataMessage");
+        const debugOutput = document.getElementById("debugOutput");
 
         // Show loading state
         function showLoading() {
@@ -117,10 +130,55 @@
             errorMessage.style.display = "none";
         }
 
-        // Fetch data from the API with improved JSON parsing
+        // Update debug information
+        function updateDebugInfo(message) {
+            debugOutput.innerHTML = message.replace(/\n/g, "<br>");
+        }
+
+        // Try to parse JSON from various possible response formats
+        function tryParseResponse(responseText) {
+            // Try 1: Direct JSON parse
+            try {
+                return JSON.parse(responseText);
+            } catch (e1) {
+                // Try 2: JSON wrapped in success() function
+                const jsonpMatch = responseText.match(/success\(({.*})\)/);
+                if (jsonpMatch) {
+                    try {
+                        return JSON.parse(jsonpMatch[1]);
+                    } catch (e2) {
+                        updateDebugInfo(`JSONP parse failed:\n${e2.message}\n\nResponse text:\n${responseText}`);
+                        throw new Error("JSONP parse failed");
+                    }
+                }
+                
+                // Try 3: Find first { and last } and try to parse that
+                const firstBrace = responseText.indexOf('{');
+                const lastBrace = responseText.lastIndexOf('}');
+                if (firstBrace >= 0 && lastBrace > firstBrace) {
+                    try {
+                        return JSON.parse(responseText.substring(firstBrace, lastBrace + 1));
+                    } catch (e3) {
+                        updateDebugInfo(`Brace extraction parse failed:\n${e3.message}\n\nResponse text:\n${responseText}`);
+                        throw new Error("Brace extraction failed");
+                    }
+                }
+                
+                // Try 4: Maybe it's already an object?
+                if (typeof responseText === 'object') {
+                    return responseText;
+                }
+                
+                updateDebugInfo(`All parse attempts failed. Full response:\n${responseText}`);
+                throw new Error("Could not parse response as JSON");
+            }
+        }
+
+        // Fetch data from the API with robust error handling
         async function fetchData() {
             showLoading();
             hideError();
+            updateDebugInfo("Starting data fetch...");
             
             try {
                 console.log("Fetching data from:", API_URL);
@@ -130,32 +188,19 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
-                // First get the response as text
+                // Get the response as text first
                 const responseText = await response.text();
-                console.log("Raw response:", responseText);
+                updateDebugInfo(`Raw response received (${responseText.length} chars):\n${responseText.substring(0, 200)}${responseText.length > 200 ? '...' : ''}`);
                 
-                // Try to parse as JSON
-                let data;
-                try {
-                    data = JSON.parse(responseText);
-                } catch (jsonError) {
-                    // If parsing fails, check if it's a JSONP-like response
-                    if (responseText.includes('success(')) {
-                        // Extract JSON from JSONP-like response
-                        const jsonStart = responseText.indexOf('{');
-                        const jsonEnd = responseText.lastIndexOf('}') + 1;
-                        const jsonString = responseText.slice(jsonStart, jsonEnd);
-                        data = JSON.parse(jsonString);
-                    } else {
-                        throw new Error("Response is not valid JSON: " + responseText);
-                    }
-                }
+                // Try to parse the response
+                const data = tryParseResponse(responseText);
+                updateDebugInfo(`Successfully parsed data:\n${JSON.stringify(data, null, 2)}`);
                 
-                console.log("Parsed data:", data);
                 return data;
             } catch (error) {
                 console.error("Error fetching data:", error);
                 showError(`Error loading data: ${error.message}`);
+                updateDebugInfo(`Error occurred:\n${error.stack || error.message}`);
                 return null;
             } finally {
                 hideLoading();
@@ -167,25 +212,32 @@
             if (!data) {
                 console.log("No data received");
                 noDataMessage.style.display = "table-row";
+                noDataMessage.innerHTML = '<td colspan="4" class="text-center">No data received from server</td>';
                 return;
             }
 
-            // Handle case where data might be wrapped in a success object
-            if (data.success && Array.isArray(data.success)) {
-                data = data.success;
+            // Handle different possible response structures
+            let dataArray;
+            if (Array.isArray(data)) {
+                dataArray = data;
+            } else if (data.success && Array.isArray(data.success)) {
+                dataArray = data.success;
             } else if (data.data && Array.isArray(data.data)) {
-                data = data.data;
-            }
-
-            if (!Array.isArray(data)) {
-                console.error("Data is not an array:", data);
+                dataArray = data.data;
+            } else if (data.values && Array.isArray(data.values)) {
+                dataArray = data.values;
+            } else if (data.records && Array.isArray(data.records)) {
+                dataArray = data.records;
+            } else {
+                console.error("Data is not in expected format:", data);
                 showError("Data format is incorrect - expected array");
                 noDataMessage.style.display = "table-row";
                 noDataMessage.innerHTML = '<td colspan="4" class="text-center">Invalid data format</td>';
+                updateDebugInfo(`Unrecognized data format:\n${JSON.stringify(data, null, 2)}`);
                 return;
             }
 
-            if (data.length === 0) {
+            if (dataArray.length === 0) {
                 console.log("Empty data array received");
                 noDataMessage.style.display = "table-row";
                 noDataMessage.innerHTML = '<td colspan="4" class="text-center">No data available</td>';
@@ -205,14 +257,16 @@
             }
 
             // Add new rows
-            data.forEach(item => {
+            dataArray.forEach((item, index) => {
                 const row = document.createElement("tr");
                 
                 // Safely handle missing properties
-                const id = item.id !== undefined ? item.id : "N/A";
+                const id = item.id !== undefined ? item.id : index + 1;
                 const name = item.name !== undefined ? item.name : "N/A";
                 const value = item.value !== undefined ? item.value : "N/A";
-                const timestamp = item.timestamp ? new Date(item.timestamp).toLocaleString() : "N/A";
+                const timestamp = item.timestamp ? new Date(item.timestamp).toLocaleString() : 
+                                item.date ? new Date(item.date).toLocaleString() : 
+                                "N/A";
                 
                 row.innerHTML = `
                     <td>${id}</td>
@@ -226,6 +280,7 @@
 
             // Update last updated time
             lastUpdatedSpan.textContent = new Date().toLocaleString();
+            updateDebugInfo(`Last update: ${new Date().toLocaleString()}\nDisplaying ${dataArray.length} records`);
         }
 
         // Main function to fetch and update data
