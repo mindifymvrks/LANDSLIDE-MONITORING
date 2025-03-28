@@ -71,9 +71,9 @@
                     
                     // Create table rows
                     data.slice(1).forEach(row => {
-                        let timestamp = row[0];
+                        let timestamp = new Date(row[0]).toLocaleString(); // Correct time formatting
                         let detected = row[1];
-                        let entryTime = new Date(timestamp).getTime();
+                        let entryTime = new Date(row[0]).getTime();
                         
                         if (detected === "YES" && entryTime >= cutoffTime) {
                             let rainfall = 10; // Each YES = 10mm
@@ -100,7 +100,7 @@
         }
         
         fetchData(); // Initial fetch
-        setInterval(fetchData, 300000); // Refresh data every 5 minutes (300,000 ms)
+        setInterval(fetchData, 1000); // Refresh data every 1 second (1000 ms)
     </script>
 </body>
 </html>
