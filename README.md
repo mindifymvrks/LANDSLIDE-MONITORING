@@ -134,42 +134,7 @@
             color: #ffcc00;
             font-weight: bold;
         }
-
-        /* Hall Sensor Styles */
-        #hall-display {
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-        }
-
-        .sensor-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            padding: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .sensor-value {
-            font-weight: bold;
-        }
-
-        .detected {
-            color: #ff5555;
-            font-weight: bold;
-            animation: pulse 0.5s infinite alternate;
-        }
-
-        .no-field {
-            color: #55ff55;
-        }
-
-        @keyframes pulse {
-            from { opacity: 1; }
-            to { opacity: 0.7; }
-        }
-
+        
         @keyframes pulseWarning {
             0% { opacity: 1; }
             50% { opacity: 0.7; }
@@ -238,44 +203,7 @@
     <div id="datas" class="section">
         <div class="content-box">
             <h2>Live Data</h2>
-            
-            <!-- Hall Sensor Display -->
-            <div id="hall-display">
-                <h3>Magnetic Field Detection</h3>
-                <div class="sensor-row">
-                    <span>Status:</span>
-                    <span id="magnetic-status" class="no-field">--</span>
-                </div>
-                <div class="sensor-row">
-                    <span>Raw Value:</span>
-                    <span id="raw-value" class="sensor-value">--</span>
-                </div>
-                <div class="sensor-row">
-                    <span>Detections:</span>
-                    <span id="detection-count" class="sensor-value">0</span>
-                </div>
-                <div class="sensor-row">
-                    <span>Last Update:</span>
-                    <span id="last-update" class="sensor-value">Never</span>
-                </div>
-            </div>
-            
-            <!-- Detection History -->
-            <h3>Detection History</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>Raw Value</th>
-                    </tr>
-                </thead>
-                <tbody id="history">
-                    <tr><td colspan="2">No detections yet</td></tr>
-                </tbody>
-            </table>
-            
-            <!-- Rainfall Monitoring -->
-            <h3>Rainfall Monitoring (2mm per deflection)</h3>
+            <p>Real-time rainfall monitoring (2mm per deflection):</p>
             <table class="data-table">
                 <thead>
                     <tr>
@@ -286,6 +214,7 @@
                     </tr>
                 </thead>
                 <tbody id="sensorData">
+                    <!-- Data will be inserted here automatically -->
                     <tr>
                         <td colspan="4">Loading data...</td>
                     </tr>
@@ -321,7 +250,80 @@
     </div>
 
     <script>
-        // Navigation function
+        // ESP32 Data Integration
+        const ESP32_IP = "192.168.1.100"; // Replace with your ESP32's IP
+        const UPDATE_INTERVAL = 4000; // 4 seconds for testing
+        // const UPDATE_INTERVAL = 240000; // 4 minutes for production
+        const MM_PER_DEFLECTION = 2; // 2mm per pulse
+        const WARNING_THRESHOLD = 12; // 12mm in 4 minutes triggers warning
+        
+        let rainfallHistory = [];
+        
+        function fetchSensorData() {
+            fetch(`http://${ESP32_IP}/data?t=${Date.now()}`)
+                .then(response => response.json())
+                .then(data => {
+                    const now = new Date();
+                    const currentRain = data.rainfall * MM_PER_DEFLECTION;
+                    
+                    // Add new reading to history
+                    rainfallHistory.push({
+                        time: now.getTime(),
+                        value: currentRain
+                    });
+                    
+                    // Remove readings older than 4 minutes
+                    const cutoffTime = now.getTime() - (4 * 60 * 1000);
+                    rainfallHistory = rainfallHistory.filter(r => r.time > cutoffTime);
+                    
+                    // Calculate 4-minute total
+                    const totalRain = rainfallHistory.reduce((sum, r) => sum + r.value, 0);
+                    
+                    // Update the table
+                    updateDataTable(now, currentRain, totalRain);
+                })
+                .catch(error => {
+                    console.error("Error fetching sensor data:", error);
+                    document.getElementById('sensorData').innerHTML = `
+                        <tr>
+                            <td colspan="4">Error connecting to sensor</td>
+                        </tr>
+                    `;
+                });
+        }
+        
+        function updateDataTable(timestamp, currentRain, totalRain) {
+            const tableBody = document.getElementById('sensorData');
+            const newRow = document.createElement('tr');
+            
+            // Add warning class if threshold exceeded
+            if (totalRain > WARNING_THRESHOLD) {
+                newRow.classList.add('warning-row');
+            }
+            
+            newRow.innerHTML = `
+                <td>${timestamp.toLocaleTimeString()}</td>
+                <td>${currentRain.toFixed(1)}</td>
+                <td>${totalRain.toFixed(1)}</td>
+                <td>${totalRain > WARNING_THRESHOLD ? 
+                     '<span class="warning-text">WARNING: Possible landslide</span>' : 
+                     'Normal'}</td>
+            `;
+            
+            // Add to top of table
+            tableBody.insertBefore(newRow, tableBody.firstChild);
+            
+            // Keep only the last 15 readings
+            if (tableBody.children.length > 15) {
+                tableBody.removeChild(tableBody.lastChild);
+            }
+        }
+        
+        // Start periodic updates
+        setInterval(fetchSensorData, UPDATE_INTERVAL);
+        fetchSensorData(); // Initial call
+
+        // Your existing navigation function
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('visible');
@@ -330,137 +332,6 @@
                 document.getElementById(sectionId).classList.add('visible');
             }, 100);
         }
-
-        // ESP32 Data Integration
-        const ESP32_ENDPOINT = 'http://192.168.20.6/data';
-        const HALL_UPDATE_INTERVAL = 500; // 500ms for hall sensor
-        const RAIN_UPDATE_INTERVAL = 4000; // 4s for rainfall
-        const MM_PER_DEFLECTION = 2;
-        const WARNING_THRESHOLD = 12;
-        
-        let rainfallHistory = [];
-        let hallDetectionHistory = [];
-        let detectionCount = 0;
-
-        // Hall Sensor Data Fetch
-        async function fetchHallData() {
-            try {
-                const response = await fetch(`${ESP32_ENDPOINT}?t=${Date.now()}`);
-                if (!response.ok) throw new Error('Network error');
-                
-                const data = await response.json();
-                updateHallDisplay(data);
-                
-            } catch (error) {
-                console.error('Hall sensor error:', error);
-                document.getElementById('last-update').textContent = `Error: ${error.message}`;
-            }
-        }
-
-        function updateHallDisplay(data) {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            
-            // Update hall sensor display
-            const isDetected = data.magnetic_field === 1;
-            const statusElement = document.getElementById('magnetic-status');
-            statusElement.textContent = isDetected ? "DETECTED" : "No field";
-            statusElement.className = isDetected ? "detected" : "no-field";
-            
-            document.getElementById('raw-value').textContent = data.raw_hall || 'N/A';
-            document.getElementById('last-update').textContent = timeString;
-            
-            // Update detection count and history
-            if (isDetected) {
-                detectionCount++;
-                document.getElementById('detection-count').textContent = detectionCount;
-                
-                // Add to history (keep last 20 events)
-                hallDetectionHistory.unshift({
-                    time: timeString,
-                    value: data.raw_hall
-                });
-                hallDetectionHistory = hallDetectionHistory.slice(0, 20);
-                
-                // Update history table
-                const historyBody = document.getElementById('history');
-                historyBody.innerHTML = hallDetectionHistory.map(item => 
-                    `<tr>
-                        <td>${item.time}</td>
-                        <td>${item.value}</td>
-                    </tr>`
-                ).join('');
-            }
-        }
-
-        // Rainfall Data Fetch
-        async function fetchRainfallData() {
-            try {
-                const response = await fetch(`${ESP32_ENDPOINT}?t=${Date.now()}`);
-                if (!response.ok) throw new Error('Network error');
-                
-                const data = await response.json();
-                updateRainfallTable(data);
-                
-            } catch (error) {
-                console.error('Rainfall error:', error);
-                document.getElementById('sensorData').innerHTML = `
-                    <tr>
-                        <td colspan="4">Error: ${error.message}</td>
-                    </tr>
-                `;
-            }
-        }
-
-        function updateRainfallTable(data) {
-            if (!data.rainfall) return;
-            
-            const now = new Date();
-            const currentRain = data.rainfall * MM_PER_DEFLECTION;
-            
-            // Add to history
-            rainfallHistory.push({
-                time: now.getTime(),
-                value: currentRain
-            });
-            
-            // Remove old entries
-            const cutoffTime = now.getTime() - (4 * 60 * 1000);
-            rainfallHistory = rainfallHistory.filter(r => r.time > cutoffTime);
-            
-            // Calculate total
-            const totalRain = rainfallHistory.reduce((sum, r) => sum + r.value, 0);
-            
-            // Update table
-            const tableBody = document.getElementById('sensorData');
-            const newRow = document.createElement('tr');
-            
-            if (totalRain > WARNING_THRESHOLD) {
-                newRow.classList.add('warning-row');
-            }
-            
-            newRow.innerHTML = `
-                <td>${now.toLocaleTimeString()}</td>
-                <td>${currentRain.toFixed(1)}</td>
-                <td>${totalRain.toFixed(1)}</td>
-                <td>${totalRain > WARNING_THRESHOLD ? 
-                     '<span class="warning-text">WARNING: Possible landslide</span>' : 
-                     'Normal'}</td>
-            `;
-            
-            tableBody.insertBefore(newRow, tableBody.firstChild);
-            
-            // Keep only last 15 entries
-            if (tableBody.children.length > 15) {
-                tableBody.removeChild(tableBody.lastChild);
-            }
-        }
-
-        // Start updates
-        setInterval(fetchHallData, HALL_UPDATE_INTERVAL);
-        setInterval(fetchRainfallData, RAIN_UPDATE_INTERVAL);
-        fetchHallData(); // Initial calls
-        fetchRainfallData();
     </script>
 </body>
 </html>
