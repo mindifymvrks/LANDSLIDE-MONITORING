@@ -21,6 +21,10 @@
         th {
             background-color: #f2f2f2;
         }
+        .warning {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -49,22 +53,36 @@
                 
                 // Create table headers
                 let headerRow = document.createElement("tr");
-                data[0].forEach(header => {
+                ["Timestamp", "Rainfall (mm)", "Slope Status"].forEach(header => {
                     let th = document.createElement("th");
                     th.textContent = header;
                     headerRow.appendChild(th);
                 });
                 table.appendChild(headerRow);
                 
+                let totalRainfall = 0;
+                
                 // Create table rows
                 data.slice(1).forEach(row => {
-                    let tr = document.createElement("tr");
-                    row.forEach(cell => {
-                        let td = document.createElement("td");
-                        td.textContent = cell;
-                        tr.appendChild(td);
-                    });
-                    table.appendChild(tr);
+                    let timestamp = row[0];
+                    let detected = row[1];
+                    
+                    if (detected === "YES") {
+                        let rainfall = 10; // Each YES = 10mm
+                        totalRainfall += rainfall;
+                        let slopeStatus = totalRainfall > 120 ? "Landslide Warning" : "Safe";
+                        
+                        let tr = document.createElement("tr");
+                        [timestamp, rainfall, slopeStatus].forEach((cell, index) => {
+                            let td = document.createElement("td");
+                            td.textContent = cell;
+                            if (index === 2 && slopeStatus === "Landslide Warning") {
+                                td.classList.add("warning");
+                            }
+                            tr.appendChild(td);
+                        });
+                        table.appendChild(tr);
+                    }
                 });
             })
             .catch(error => {
