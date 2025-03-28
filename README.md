@@ -9,10 +9,12 @@
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
         }
         .card {
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
         .card-header {
             background-color: #f1f8ff;
@@ -25,18 +27,23 @@
             background-color: #f1f8ff;
             border-top: none;
         }
-        .table-responsive {
-            overflow-x: auto;
-        }
         #lastUpdated {
             font-weight: bold;
             color: #0d6efd;
         }
+        #loadingSpinner {
+            display: none;
+        }
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container mt-3">
         <h1 class="text-center mb-4">Real-Time Spreadsheet Data</h1>
+        
         <div class="card">
             <div class="card-header">
                 <div class="row">
@@ -44,11 +51,15 @@
                         <h5>Current Data</h5>
                     </div>
                     <div class="col-md-6 text-end">
+                        <div id="loadingSpinner" class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                         <small>Last updated: <span id="lastUpdated">Never</span></small>
                     </div>
                 </div>
             </div>
             <div class="card-body">
+                <div id="errorMessage" class="error-message mb-3" style="display: none;"></div>
                 <div class="table-responsive">
                     <table class="table table-striped table-hover" id="dataTable">
                         <thead>
@@ -60,70 +71,129 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Data will be inserted here by JavaScript -->
+                            <tr id="noDataMessage">
+                                <td colspan="4" class="text-center">Loading data...</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div class="mt-3 text-center text-muted">
-            <small>Auto-refreshing every 10 seconds</small>
+        <div class="text-center text-muted">
+            <small>Auto-refreshing every 0.5 seconds</small>
         </div>
     </div>
 
     <script>
         // Configuration
         const API_URL = "https://script.google.com/macros/s/AKfycbzldXn8izlLNKwFrzs6MXXRmfqVsWhxCvFyEmLIIktZgeHY2zX2nr5mitWRxjd7GmIp9w/exec";
-        const REFRESH_INTERVAL = 10000; // 10 seconds
-
+        const REFRESH_INTERVAL = 500; // 0.5 seconds
+        
         // DOM Elements
         const dataTableBody = document.querySelector("#dataTable tbody");
         const lastUpdatedSpan = document.getElementById("lastUpdated");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+        const errorMessage = document.getElementById("errorMessage");
+        const noDataMessage = document.getElementById("noDataMessage");
+
+        // Show loading state
+        function showLoading() {
+            loadingSpinner.style.display = "inline-block";
+        }
+
+        // Hide loading state
+        function hideLoading() {
+            loadingSpinner.style.display = "none";
+        }
+
+        // Show error message
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = "block";
+        }
+
+        // Hide error message
+        function hideError() {
+            errorMessage.style.display = "none";
+        }
 
         // Fetch data from the API
         async function fetchData() {
+            showLoading();
+            hideError();
+            
             try {
+                console.log("Fetching data from:", API_URL);
                 const response = await fetch(API_URL);
+                
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                
                 const data = await response.json();
+                console.log("Data received:", data);
+                
                 return data;
             } catch (error) {
                 console.error("Error fetching data:", error);
+                showError(`Error loading data: ${error.message}`);
                 return null;
+            } finally {
+                hideLoading();
             }
         }
 
         // Update the table with new data
         function updateTable(data) {
-            if (!data || !Array.isArray(data)) {
-                console.error("Invalid data format");
+            if (!data) {
+                console.log("No data received");
+                noDataMessage.style.display = "table-row";
                 return;
             }
 
-            // Clear existing rows
-            dataTableBody.innerHTML = "";
+            if (!Array.isArray(data)) {
+                console.error("Data is not an array:", data);
+                showError("Data format is incorrect - expected array");
+                noDataMessage.style.display = "table-row";
+                noDataMessage.innerHTML = '<td colspan="4" class="text-center">Invalid data format</td>';
+                return;
+            }
+
+            if (data.length === 0) {
+                console.log("Empty data array received");
+                noDataMessage.style.display = "table-row";
+                noDataMessage.innerHTML = '<td colspan="4" class="text-center">No data available</td>';
+                return;
+            }
+
+            // Hide no data message
+            noDataMessage.style.display = "none";
+
+            // Clear existing rows (except the no data message)
+            while (dataTableBody.firstChild) {
+                if (dataTableBody.firstChild !== noDataMessage) {
+                    dataTableBody.removeChild(dataTableBody.firstChild);
+                } else {
+                    break;
+                }
+            }
 
             // Add new rows
             data.forEach(item => {
                 const row = document.createElement("tr");
                 
-                const idCell = document.createElement("td");
-                idCell.textContent = item.id || "N/A";
-                row.appendChild(idCell);
+                // Safely handle missing properties
+                const id = item.id !== undefined ? item.id : "N/A";
+                const name = item.name !== undefined ? item.name : "N/A";
+                const value = item.value !== undefined ? item.value : "N/A";
+                const timestamp = item.timestamp ? new Date(item.timestamp).toLocaleString() : "N/A";
                 
-                const nameCell = document.createElement("td");
-                nameCell.textContent = item.name || "N/A";
-                row.appendChild(nameCell);
-                
-                const valueCell = document.createElement("td");
-                valueCell.textContent = item.value || "N/A";
-                row.appendChild(valueCell);
-                
-                const timestampCell = document.createElement("td");
-                timestampCell.textContent = item.timestamp ? new Date(item.timestamp).toLocaleString() : "N/A";
-                row.appendChild(timestampCell);
+                row.innerHTML = `
+                    <td>${id}</td>
+                    <td>${name}</td>
+                    <td>${value}</td>
+                    <td>${timestamp}</td>
+                `;
                 
                 dataTableBody.appendChild(row);
             });
@@ -135,9 +205,7 @@
         // Main function to fetch and update data
         async function updateData() {
             const data = await fetchData();
-            if (data) {
-                updateTable(data);
-            }
+            updateTable(data);
         }
 
         // Initial load
