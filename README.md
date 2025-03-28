@@ -117,7 +117,7 @@
             errorMessage.style.display = "none";
         }
 
-        // Fetch data from the API
+        // Fetch data from the API with improved JSON parsing
         async function fetchData() {
             showLoading();
             hideError();
@@ -130,9 +130,28 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
-                const data = await response.json();
-                console.log("Data received:", data);
+                // First get the response as text
+                const responseText = await response.text();
+                console.log("Raw response:", responseText);
                 
+                // Try to parse as JSON
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                } catch (jsonError) {
+                    // If parsing fails, check if it's a JSONP-like response
+                    if (responseText.includes('success(')) {
+                        // Extract JSON from JSONP-like response
+                        const jsonStart = responseText.indexOf('{');
+                        const jsonEnd = responseText.lastIndexOf('}') + 1;
+                        const jsonString = responseText.slice(jsonStart, jsonEnd);
+                        data = JSON.parse(jsonString);
+                    } else {
+                        throw new Error("Response is not valid JSON: " + responseText);
+                    }
+                }
+                
+                console.log("Parsed data:", data);
                 return data;
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -149,6 +168,13 @@
                 console.log("No data received");
                 noDataMessage.style.display = "table-row";
                 return;
+            }
+
+            // Handle case where data might be wrapped in a success object
+            if (data.success && Array.isArray(data.success)) {
+                data = data.success;
+            } else if (data.data && Array.isArray(data.data)) {
+                data = data.data;
             }
 
             if (!Array.isArray(data)) {
