@@ -51,6 +51,10 @@
                     return;
                 }
                 
+                // Get current time and filter out entries older than 24 hours
+                let now = new Date();
+                let cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24 hours ago in milliseconds
+                
                 // Create table headers
                 let headerRow = document.createElement("tr");
                 ["Timestamp", "Rainfall (mm)", "Slope Status"].forEach(header => {
@@ -66,11 +70,12 @@
                 data.slice(1).forEach(row => {
                     let timestamp = row[0];
                     let detected = row[1];
+                    let entryTime = new Date(timestamp).getTime();
                     
-                    if (detected === "YES") {
+                    if (detected === "YES" && entryTime >= cutoffTime) {
                         let rainfall = 10; // Each YES = 10mm
                         totalRainfall += rainfall;
-                        let slopeStatus = totalRainfall > 120 ? "Landslide Warning" : "Safe";
+                        let slopeStatus = totalRainfall > 200 ? "Landslide Warning" : "Safe";
                         
                         let tr = document.createElement("tr");
                         [timestamp, rainfall, slopeStatus].forEach((cell, index) => {
