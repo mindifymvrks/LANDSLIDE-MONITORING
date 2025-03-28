@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -135,6 +136,29 @@
             font-weight: bold;
         }
         
+        /* Sensor Data Dashboard Styles */
+        #sensor-dashboard {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sensor-value {
+            font-weight: bold;
+            color: #ffcc00;
+            margin-left: 10px;
+        }
+        
+        .sensor-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
         @keyframes pulseWarning {
             0% { opacity: 1; }
             50% { opacity: 0.7; }
@@ -165,6 +189,10 @@
             .section {
                 padding: 40px 10px;
             }
+            
+            #sensor-dashboard {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -190,6 +218,26 @@
         <div class="content-box">
             <h2>Welcome to the Landslide Monitoring System</h2>
             <p>This system provides real-time landslide monitoring and early warnings to ensure safety.</p>
+            
+            <!-- Quick Status Dashboard -->
+            <div id="sensor-dashboard">
+                <div class="sensor-row">
+                    <span>Moisture:</span>
+                    <span id="moisture" class="sensor-value">--</span>%
+                </div>
+                <div class="sensor-row">
+                    <span>Vibration:</span>
+                    <span id="vibration" class="sensor-value">--</span>
+                </div>
+                <div class="sensor-row">
+                    <span>Tilt:</span>
+                    <span id="tilt" class="sensor-value">--</span>°
+                </div>
+                <div class="sensor-row">
+                    <span>Last Update:</span>
+                    <span id="timestamp" class="sensor-value">Never</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -203,7 +251,29 @@
     <div id="datas" class="section">
         <div class="content-box">
             <h2>Live Data</h2>
-            <p>Real-time rainfall monitoring (2mm per deflection):</p>
+            <p>Real-time sensor monitoring:</p>
+            
+            <!-- Sensor Data Display -->
+            <div id="sensor-dashboard">
+                <div class="sensor-row">
+                    <span>Moisture:</span>
+                    <span id="moisture-detail" class="sensor-value">--</span>%
+                </div>
+                <div class="sensor-row">
+                    <span>Vibration:</span>
+                    <span id="vibration-detail" class="sensor-value">--</span>
+                </div>
+                <div class="sensor-row">
+                    <span>Tilt:</span>
+                    <span id="tilt-detail" class="sensor-value">--</span>°
+                </div>
+                <div class="sensor-row">
+                    <span>Last Update:</span>
+                    <span id="timestamp-detail" class="sensor-value">Never</span>
+                </div>
+            </div>
+            
+            <p>Rainfall monitoring (2mm per deflection):</p>
             <table class="data-table">
                 <thead>
                     <tr>
@@ -214,7 +284,6 @@
                     </tr>
                 </thead>
                 <tbody id="sensorData">
-                    <!-- Data will be inserted here automatically -->
                     <tr>
                         <td colspan="4">Loading data...</td>
                     </tr>
@@ -250,49 +319,88 @@
     </div>
 
     <script>
+        // Navigation function
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('visible');
+            });
+            setTimeout(() => {
+                document.getElementById(sectionId).classList.add('visible');
+            }, 100);
+        }
+
         // ESP32 Data Integration
-        const ESP32_IP = "192.168.1.100"; // Replace with your ESP32's IP
-        const UPDATE_INTERVAL = 4000; // 4 seconds for testing
-        // const UPDATE_INTERVAL = 240000; // 4 minutes for production
+        const ESP32_ENDPOINT = 'http://192.168.20.6/data'; // Replace with your ESP32's IP or public URL
+        const UPDATE_INTERVAL = 5000; // 5 seconds for sensor data
+        const RAIN_UPDATE_INTERVAL = 4000; // 4 seconds for rainfall data
         const MM_PER_DEFLECTION = 2; // 2mm per pulse
         const WARNING_THRESHOLD = 12; // 12mm in 4 minutes triggers warning
         
         let rainfallHistory = [];
         
-        function fetchSensorData() {
-            fetch(`http://${ESP32_IP}/data?t=${Date.now()}`)
-                .then(response => response.json())
-                .then(data => {
-                    const now = new Date();
-                    const currentRain = data.rainfall * MM_PER_DEFLECTION;
-                    
-                    // Add new reading to history
-                    rainfallHistory.push({
-                        time: now.getTime(),
-                        value: currentRain
-                    });
-                    
-                    // Remove readings older than 4 minutes
-                    const cutoffTime = now.getTime() - (4 * 60 * 1000);
-                    rainfallHistory = rainfallHistory.filter(r => r.time > cutoffTime);
-                    
-                    // Calculate 4-minute total
-                    const totalRain = rainfallHistory.reduce((sum, r) => sum + r.value, 0);
-                    
-                    // Update the table
-                    updateDataTable(now, currentRain, totalRain);
-                })
-                .catch(error => {
-                    console.error("Error fetching sensor data:", error);
-                    document.getElementById('sensorData').innerHTML = `
-                        <tr>
-                            <td colspan="4">Error connecting to sensor</td>
-                        </tr>
-                    `;
-                });
+        // Fetch and update sensor data
+        async function fetchSensorData() {
+            try {
+                const response = await fetch(`${ESP32_ENDPOINT}?t=${Date.now()}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                
+                // Update all dashboard displays
+                updateSensorDisplay(data);
+                updateRainfallData(data);
+                
+            } catch (error) {
+                console.error('Error fetching sensor data:', error);
+                document.getElementById('timestamp').textContent = 'Error: ' + error.message;
+                document.getElementById('timestamp-detail').textContent = 'Error: ' + error.message;
+            }
         }
         
-        function updateDataTable(timestamp, currentRain, totalRain) {
+        // Update the sensor value displays
+        function updateSensorDisplay(data) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            
+            // Update home section
+            document.getElementById('moisture').textContent = data.moisture || '--';
+            document.getElementById('vibration').textContent = data.vibration || '--';
+            document.getElementById('tilt').textContent = data.tilt || '--';
+            document.getElementById('timestamp').textContent = timeString;
+            
+            // Update datas section
+            document.getElementById('moisture-detail').textContent = data.moisture || '--';
+            document.getElementById('vibration-detail').textContent = data.vibration || '--';
+            document.getElementById('tilt-detail').textContent = data.tilt || '--';
+            document.getElementById('timestamp-detail').textContent = timeString;
+        }
+        
+        // Process rainfall data
+        function updateRainfallData(data) {
+            if (!data.rainfall) return;
+            
+            const now = new Date();
+            const currentRain = data.rainfall * MM_PER_DEFLECTION;
+            
+            // Add new reading to history
+            rainfallHistory.push({
+                time: now.getTime(),
+                value: currentRain
+            });
+            
+            // Remove readings older than 4 minutes
+            const cutoffTime = now.getTime() - (4 * 60 * 1000);
+            rainfallHistory = rainfallHistory.filter(r => r.time > cutoffTime);
+            
+            // Calculate 4-minute total
+            const totalRain = rainfallHistory.reduce((sum, r) => sum + r.value, 0);
+            
+            // Update the table
+            updateRainfallTable(now, currentRain, totalRain);
+        }
+        
+        // Update the rainfall table
+        function updateRainfallTable(timestamp, currentRain, totalRain) {
             const tableBody = document.getElementById('sensorData');
             const newRow = document.createElement('tr');
             
@@ -322,16 +430,6 @@
         // Start periodic updates
         setInterval(fetchSensorData, UPDATE_INTERVAL);
         fetchSensorData(); // Initial call
-
-        // Your existing navigation function
-        function showSection(sectionId) {
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('visible');
-            });
-            setTimeout(() => {
-                document.getElementById(sectionId).classList.add('visible');
-            }, 100);
-        }
     </script>
 </body>
 </html>
