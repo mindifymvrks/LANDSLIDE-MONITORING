@@ -8,6 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            margin: 20px;
         }
         table {
             width: 80%;
@@ -35,120 +36,142 @@
             color: white;
             font-weight: bold;
         }
+        #last-update {
+            font-style: italic;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <h2>Real-Time Spreadsheet Data</h2>
+    <h2>Real-Time Rainfall Monitoring</h2>
     <p id="status">Loading data...</p>
+    <div id="last-update"></div>
     <table id="data-table"></table>
     
     <script>
         const url = "https://script.google.com/macros/s/AKfycby5m8GXi6m3gCnbZ9dyqUMRtsMzYsgzYAdrpCKcUUyknRUgMsuHIZyswQg2nES4I2L03A/exec";
-        let lastNotification = ""; // Prevent repeated notifications
-        let cumulativeRainfall = 0; // Track cumulative rainfall across refreshes
+        let lastNotification = "";
+        let lastData = [];
 
         // Request notification permission
-        if ("Notification" in window) {
-            Notification.requestPermission();
+        if ("Notification" in window && Notification.permission !== "granted") {
+            Notification.requestPermission().then(permission => {
+                console.log("Notification permission:", permission);
+            });
         }
 
         function sendNotification(title, message) {
             if (Notification.permission === "granted") {
-                new Notification(title, { body: message, icon: "https://cdn-icons-png.flaticon.com/512/189/189664.png" });
+                new Notification(title, { 
+                    body: message, 
+                    icon: "https://cdn-icons-png.flaticon.com/512/189/189664.png" 
+                });
+            }
+        }
+
+        function processData(data) {
+            const now = new Date();
+            const cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24-hour window
+            let cumulativeRainfall = 0;
+            let latestStatus = "Safe";
+            let tableHTML = `
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Cumulative Rainfall (mm)</th>
+                    <th>Slope Status</th>
+                </tr>
+            `;
+
+            // Filter and process only new data
+            const newData = data.slice(1).filter(row => {
+                const rowTime = new Date(row[0]).getTime();
+                return rowTime > (lastData.length > 0 ? 
+                    new Date(lastData[lastData.length - 1][0]).getTime() : 0);
+            });
+
+            if (newData.length === 0 && lastData.length > 0) {
+                // No new data, use last data to maintain display
+                data = lastData;
+            } else {
+                lastData = data.slice(1); // Store all data except header
+            }
+
+            data.slice(1)
+                .filter(row => new Date(row[0]).getTime() >= cutoffTime && row[1] === "YES")
+                .forEach(row => {
+                    cumulativeRainfall += 0.2;
+                    
+                    let status = "Safe";
+                    let rowClass = "";
+                    
+                    if (cumulativeRainfall >= 5) {
+                        status = "Failure";
+                        rowClass = "failure";
+                    } else if (cumulativeRainfall >= 3) {
+                        status = "Warning";
+                        rowClass = "warning";
+                    } else if (cumulativeRainfall >= 2) {
+                        status = "Alert";
+                        rowClass = "alert";
+                    }
+                    
+                    latestStatus = status;
+                    
+                    tableHTML += `
+                        <tr class="${rowClass}">
+                            <td>${new Date(row[0]).toLocaleString()}</td>
+                            <td>${cumulativeRainfall.toFixed(1)}</td>
+                            <td>${status}</td>
+                        </tr>
+                    `;
+                });
+
+            // Update the display
+            document.getElementById("data-table").innerHTML = tableHTML;
+            document.getElementById("last-update").textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+            
+            // Handle notifications
+            if (latestStatus !== lastNotification) {
+                if (latestStatus === "Alert") {
+                    sendNotification("⚠️ Alert", "Rainfall reached 2mm. Stay cautious!");
+                } else if (latestStatus === "Warning") {
+                    sendNotification("⚠️ Warning", "Rainfall reached 3mm. Risk increasing!");
+                } else if (latestStatus === "Failure") {
+                    sendNotification("🚨 Failure", "Rainfall reached 5mm! Landslide possible!");
+                }
+                lastNotification = latestStatus;
             }
         }
 
         function fetchData() {
             fetch(url)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
                 .then(data => {
-                    let table = document.getElementById("data-table");
-                    let status = document.getElementById("status");
-                    status.style.display = "none";
-                    table.innerHTML = ""; // Clear previous data
-                    
-                    if (!Array.isArray(data) || data.length === 0) {
-                        table.innerHTML = "<tr><td>No data available</td></tr>";
-                        return;
-                    }
-                    
-                    let now = new Date();
-                    let cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24-hour cutoff
-
-                    let headerRow = document.createElement("tr");
-                    ["Timestamp", "Cumulative Rainfall (mm)", "Slope Status"].forEach(header => {
-                        let th = document.createElement("th");
-                        th.textContent = header;
-                        headerRow.appendChild(th);
-                    });
-                    table.appendChild(headerRow);
-                    
-                    // Reset cumulative rainfall for each fetch
-                    let sessionRainfall = 0;
-                    let latestStatus = "Safe";
-
-                    // Process data in chronological order (oldest first)
-                    data.slice(1).forEach(row => {
-                        let timestamp = new Date(row[0]);
-                        let entryTime = timestamp.getTime();
-                        let detected = row[1];
-                        
-                        // Only process entries within last 24 hours
-                        if (entryTime >= cutoffTime && detected === "YES") {
-                            sessionRainfall += 0.2; // Each "YES" = 0.2mm rainfall
-
-                            let slopeStatus = "Safe";
-                            let rowClass = "";
-
-                            if (sessionRainfall >= 5) {
-                                slopeStatus = "Failure";
-                                rowClass = "failure";
-                            } else if (sessionRainfall >= 3) {
-                                slopeStatus = "Warning";
-                                rowClass = "warning";
-                            } else if (sessionRainfall >= 2) {
-                                slopeStatus = "Alert";
-                                rowClass = "alert";
-                            }
-
-                            latestStatus = slopeStatus; // Update latest status
-
-                            let tr = document.createElement("tr");
-                            tr.classList.add(rowClass);
-
-                            [timestamp.toLocaleString(), sessionRainfall.toFixed(1), slopeStatus].forEach(cell => {
-                                let td = document.createElement("td");
-                                td.textContent = cell;
-                                tr.appendChild(td);
-                            });
-
-                            table.appendChild(tr);
-                        }
-                    });
-
-                    // Update cumulative rainfall
-                    cumulativeRainfall = sessionRainfall;
-
-                    // Send notification only if status changes
-                    if (latestStatus !== lastNotification) {
-                        if (latestStatus === "Alert") {
-                            sendNotification("⚠️ Alert", "Rainfall reached 2mm. Stay cautious!");
-                        } else if (latestStatus === "Warning") {
-                            sendNotification("⚠️ Warning", "Rainfall reached 3mm. Risk of landslide increasing!");
-                        } else if (latestStatus === "Failure") {
-                            sendNotification("🚨 Failure", "Rainfall reached 5mm! Landslide possible!");
-                        }
-                        lastNotification = latestStatus;
-                    }
+                    document.getElementById("status").style.display = "none";
+                    processData(data);
                 })
                 .catch(error => {
-                    document.getElementById("status").textContent = "Failed to load data: " + error.message;
-                    console.error("Error fetching data:", error);
+                    console.error("Fetch error:", error);
+                    document.getElementById("status").textContent = "Error loading data. Retrying...";
+                    setTimeout(fetchData, 5000); // Retry after 5 seconds
                 });
         }
 
-        fetchData(); // Initial fetch
-        setInterval(fetchData, 1000); // Fetch data every second
+        // Initial load
+        fetchData();
+        
+        // Refresh every 1 second
+        const refreshInterval = setInterval(fetchData, 1000);
+        
+        // Add error handling for the interval
+        window.addEventListener('error', (e) => {
+            console.error("Script error:", e);
+            clearInterval(refreshInterval);
+            document.getElementById("status").textContent = "Script error occurred. Please reload the page.";
+        });
     </script>
 </body>
 </html>
