@@ -91,10 +91,58 @@
                         let entryTime = new Date(row[0]).getTime();
                         
                         if (detected === "YES" && entryTime >= cutoffTime) {
-                            let rainfall = 5; // Each "YES" = 5mm rainfall
+                            let rainfall = 0.2; // Each "YES" = 5mm rainfall
                             totalRainfall += rainfall;
 
                             let slopeStatus = "Safe";
                             let rowClass = "";
 
-                            if (totalRainfall >= 70) {
+                            if (totalRainfall >= 5) {
+                                slopeStatus = "Failure";
+                                rowClass = "failure";
+                            } else if (totalRainfall >= 3) {
+                                slopeStatus = "Warning";
+                                rowClass = "warning";
+                            } else if (totalRainfall >= 2) {
+                                slopeStatus = "Alert";
+                                rowClass = "alert";
+                            }
+
+                            latestStatus = slopeStatus; // Update latest status
+
+                            let tr = document.createElement("tr");
+                            tr.classList.add(rowClass);
+
+                            [timestamp, rainfall, slopeStatus].forEach(cell => {
+                                let td = document.createElement("td");
+                                td.textContent = cell;
+                                tr.appendChild(td);
+                            });
+
+                            table.appendChild(tr);
+                        }
+                    });
+
+                    // Send notification only if status changes
+                    if (latestStatus !== lastNotification) {
+                        if (latestStatus === "Alert") {
+                            sendNotification("⚠️ Alert", "Rainfall reached 5 mm. Stay cautious!");
+                        } else if (latestStatus === "Warning") {
+                            sendNotification("⚠️ Warning", "Rainfall reached 3 mm. Risk of landslide increasing!");
+                        } else if (latestStatus === "Failure") {
+                            sendNotification("🚨 Failure", "Rainfall reached 2 mm! Landslide possible!");
+                        }
+                        lastNotification = latestStatus;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("status").textContent = "Failed to load data: " + error.message;
+                    console.error("Error fetching data:", error);
+                });
+        }
+
+        fetchData(); // Initial fetch
+        setInterval(fetchData, 1000); // Fetch data every second
+    </script>
+</body>
+</html>
