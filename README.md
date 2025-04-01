@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
-            color: black; /* Added to make all text black */
+            color: black;
         }
         table {
             width: 80%;
@@ -29,11 +29,11 @@
         }
         .warning {
             background-color: orange;
-            font-weight: bold; /* Removed white color */
+            font-weight: bold;
         }
         .failure {
             background-color: red;
-            font-weight: bold; /* Removed white color */
+            font-weight: bold;
         }
         #last-update {
             font-style: italic;
@@ -70,10 +70,10 @@
 
         function processData(data) {
             const now = new Date();
-            // Set cutoff time to today at 12:15 PM
-            const today1215 = new Date();
-            today1140.setHours(12, 15, 0, 0);
-            const cutoffTime = today1215.getTime();
+            // Set cutoff time to today at 12:27
+            const today1227 = new Date();
+            today1227.setHours(12, 27, 0, 0);  // Changed from 11:40 to 12:27
+            const cutoffTime = today1227.getTime();
             
             let cumulativeRainfall = 0;
             let latestStatus = "Safe";
@@ -96,7 +96,7 @@
                 // No new data, use last data to maintain display
                 data = lastData;
             } else {
-                lastData = data.slice(1); // Store all data except header
+                lastData = data.slice(1);
             }
 
             data.slice(1)
@@ -159,7 +159,7 @@
                 .catch(error => {
                     console.error("Fetch error:", error);
                     document.getElementById("status").textContent = "Error loading data. Retrying...";
-                    setTimeout(fetchData, 5000); // Retry after 5 seconds
+                    setTimeout(fetchData, 5000);
                 });
         }
 
