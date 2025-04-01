@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time Spreadsheet Viewer</title>
+    <title>Real-Time Landslide Monitoring</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,6 +17,7 @@
         th, td {
             border: 1px solid black;
             padding: 10px;
+            text-align: center;
         }
         th {
             background-color: #f2f2f2;
@@ -38,23 +39,32 @@
     </style>
 </head>
 <body>
-    <h2>Real-Time Spreadsheet Data</h2>
+    <h2>Real-Time Landslide Monitoring</h2>
     <p id="status">Loading data...</p>
     <table id="data-table"></table>
 
     <script>
         const url = "https://script.google.com/macros/s/AKfycby5m8GXi6m3gCnbZ9dyqUMRtsMzYsgzYAdrpCKcUUyknRUgMsuHIZyswQg2nES4I2L03A/exec";
 
-        let lastNotification = ""; // To prevent spam notifications
+        let lastNotification = ""; // Stores the last notification sent
 
         // Request permission for notifications
-        if ("Notification" in window) {
-            Notification.requestPermission();
-        }
+        document.addEventListener("DOMContentLoaded", () => {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    console.log("Notification permission:", permission);
+                });
+            }
+        });
 
         function sendNotification(title, message) {
             if (Notification.permission === "granted") {
-                new Notification(title, { body: message, icon: "https://cdn-icons-png.flaticon.com/512/189/189664.png" });
+                new Notification(title, { 
+                    body: message, 
+                    icon: "https://cdn-icons-png.flaticon.com/512/189/189664.png" 
+                });
+            } else {
+                console.log("Notification not granted.");
             }
         }
 
@@ -75,6 +85,7 @@
                     let now = new Date();
                     let cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24-hour cutoff
 
+                    // Create table header
                     let headerRow = document.createElement("tr");
                     ["Timestamp", "Rainfall (mm)", "Slope Status"].forEach(header => {
                         let th = document.createElement("th");
@@ -124,6 +135,8 @@
                         }
                     });
 
+                    console.log("Latest Status:", latestStatus, "| Last Notification:", lastNotification);
+
                     // Send notification only if status changes
                     if (latestStatus !== lastNotification) {
                         if (latestStatus === "Alert") {
@@ -133,7 +146,7 @@
                         } else if (latestStatus === "Failure") {
                             sendNotification("🚨 Failure", "Rainfall reached 70mm! Landslide possible!");
                         }
-                        lastNotification = latestStatus;
+                        lastNotification = latestStatus; // Update last notification
                     }
                 })
                 .catch(error => {
@@ -143,7 +156,7 @@
         }
 
         fetchData(); // Initial fetch
-        setInterval(fetchData, 1000); // Fetch data every second
+        setInterval(fetchData, 5000); // Fetch data every 5 seconds
     </script>
 </body>
 </html>
