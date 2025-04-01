@@ -91,7 +91,7 @@
                         let entryTime = new Date(row[0]).getTime();
                         
                         if (detected === "YES" && entryTime >= cutoffTime) {
-                            let rainfall = 0.2; // Each "YES" = 5mm rainfall
+                            let rainfall = 0.2; // Each "YES" = 0.2mm rainfall
                             totalRainfall += rainfall;
 
                             let slopeStatus = "Safe";
@@ -113,7 +113,7 @@
                             let tr = document.createElement("tr");
                             tr.classList.add(rowClass);
 
-                            [timestamp, rainfall, slopeStatus].forEach(cell => {
+                            [timestamp, rainfall.toFixed(1), slopeStatus].forEach(cell => { // Ensure rainfall shows decimals
                                 let td = document.createElement("td");
                                 td.textContent = cell;
                                 tr.appendChild(td);
@@ -126,11 +126,11 @@
                     // Send notification only if status changes
                     if (latestStatus !== lastNotification) {
                         if (latestStatus === "Alert") {
-                            sendNotification("⚠️ Alert", "Rainfall reached 5 mm. Stay cautious!");
+                            sendNotification("⚠️ Alert", "Rainfall reached 2mm. Stay cautious!");
                         } else if (latestStatus === "Warning") {
-                            sendNotification("⚠️ Warning", "Rainfall reached 3 mm. Risk of landslide increasing!");
+                            sendNotification("⚠️ Warning", "Rainfall reached 3mm. Risk of landslide increasing!");
                         } else if (latestStatus === "Failure") {
-                            sendNotification("🚨 Failure", "Rainfall reached 2 mm! Landslide possible!");
+                            sendNotification("🚨 Failure", "Rainfall reached 5mm! Landslide possible!");
                         }
                         lastNotification = latestStatus;
                     }
