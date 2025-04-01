@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
+            color: black; /* Added to make all text black */
         }
         table {
             width: 80%;
@@ -28,13 +29,11 @@
         }
         .warning {
             background-color: orange;
-            color: white;
-            font-weight: bold;
+            font-weight: bold; /* Removed white color */
         }
         .failure {
             background-color: red;
-            color: white;
-            font-weight: bold;
+            font-weight: bold; /* Removed white color */
         }
         #last-update {
             font-style: italic;
@@ -71,7 +70,11 @@
 
         function processData(data) {
             const now = new Date();
-            const cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24-hour window
+            // Set cutoff time to today at 11:40 AM
+            const today1140 = new Date();
+            today1140.setHours(11, 40, 0, 0);
+            const cutoffTime = today1140.getTime();
+            
             let cumulativeRainfall = 0;
             let latestStatus = "Safe";
             let tableHTML = `
