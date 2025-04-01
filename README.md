@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spreadsheet Viewer</title>
+    <title>Real-Time Spreadsheet Viewer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,16 +38,16 @@
     </style>
 </head>
 <body>
-    <h2>Spreadsheet Data</h2>
+    <h2>Real-Time Spreadsheet Data</h2>
     <p id="status">Loading data...</p>
     <table id="data-table"></table>
 
     <script>
         const url = "https://script.google.com/macros/s/AKfycby5m8GXi6m3gCnbZ9dyqUMRtsMzYsgzYAdrpCKcUUyknRUgMsuHIZyswQg2nES4I2L03A/exec";
 
-        let lastNotification = ""; // Store last notification type to avoid spam
+        let lastNotification = ""; // To prevent spam notifications
 
-        // Request notification permission
+        // Request permission for notifications
         if ("Notification" in window) {
             Notification.requestPermission();
         }
@@ -60,12 +60,7 @@
 
         function fetchData() {
             fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     let table = document.getElementById("data-table");
                     let status = document.getElementById("status");
@@ -78,7 +73,7 @@
                     }
                     
                     let now = new Date();
-                    let cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24 hours ago in milliseconds
+                    let cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24-hour cutoff
 
                     let headerRow = document.createElement("tr");
                     ["Timestamp", "Rainfall (mm)", "Slope Status"].forEach(header => {
@@ -114,7 +109,7 @@
                                 rowClass = "alert";
                             }
 
-                            latestStatus = slopeStatus; // Store latest status
+                            latestStatus = slopeStatus; // Update latest status
 
                             let tr = document.createElement("tr");
                             tr.classList.add(rowClass);
@@ -148,7 +143,7 @@
         }
 
         fetchData(); // Initial fetch
-        setInterval(fetchData, 30000); // Refresh data every 30 seconds
+        setInterval(fetchData, 1000); // Fetch data every second
     </script>
 </body>
 </html>
