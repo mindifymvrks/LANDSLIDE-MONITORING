@@ -45,6 +45,7 @@
     <script>
         const url = "https://script.google.com/macros/s/AKfycby5m8GXi6m3gCnbZ9dyqUMRtsMzYsgzYAdrpCKcUUyknRUgMsuHIZyswQg2nES4I2L03A/exec";
         let lastNotification = ""; // Prevent repeated notifications
+        let cumulativeRainfall = 0; // Track cumulative rainfall across refreshes
 
         // Request notification permission
         if ("Notification" in window) {
@@ -75,35 +76,37 @@
                     let cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24-hour cutoff
 
                     let headerRow = document.createElement("tr");
-                    ["Timestamp", "Rainfall (mm)", "Slope Status"].forEach(header => {
+                    ["Timestamp", "Cumulative Rainfall (mm)", "Slope Status"].forEach(header => {
                         let th = document.createElement("th");
                         th.textContent = header;
                         headerRow.appendChild(th);
                     });
                     table.appendChild(headerRow);
                     
-                    let totalRainfall = 0;
+                    // Reset cumulative rainfall for each fetch
+                    let sessionRainfall = 0;
                     let latestStatus = "Safe";
 
-                    data.slice(1).reverse().forEach(row => {
-                        let timestamp = new Date(row[0]).toLocaleString();
+                    // Process data in chronological order (oldest first)
+                    data.slice(1).forEach(row => {
+                        let timestamp = new Date(row[0]);
+                        let entryTime = timestamp.getTime();
                         let detected = row[1];
-                        let entryTime = new Date(row[0]).getTime();
                         
-                        if (detected === "YES" && entryTime >= cutoffTime) {
-                            let rainfall = 0.2; // Each "YES" = 0.2mm rainfall
-                            totalRainfall += rainfall;
+                        // Only process entries within last 24 hours
+                        if (entryTime >= cutoffTime && detected === "YES") {
+                            sessionRainfall += 0.2; // Each "YES" = 0.2mm rainfall
 
                             let slopeStatus = "Safe";
                             let rowClass = "";
 
-                            if (totalRainfall >= 5) {
+                            if (sessionRainfall >= 5) {
                                 slopeStatus = "Failure";
                                 rowClass = "failure";
-                            } else if (totalRainfall >= 3) {
+                            } else if (sessionRainfall >= 3) {
                                 slopeStatus = "Warning";
                                 rowClass = "warning";
-                            } else if (totalRainfall >= 2) {
+                            } else if (sessionRainfall >= 2) {
                                 slopeStatus = "Alert";
                                 rowClass = "alert";
                             }
@@ -113,7 +116,7 @@
                             let tr = document.createElement("tr");
                             tr.classList.add(rowClass);
 
-                            [timestamp, rainfall.toFixed(1), slopeStatus].forEach(cell => { // Ensure rainfall shows decimals
+                            [timestamp.toLocaleString(), sessionRainfall.toFixed(1), slopeStatus].forEach(cell => {
                                 let td = document.createElement("td");
                                 td.textContent = cell;
                                 tr.appendChild(td);
@@ -122,6 +125,9 @@
                             table.appendChild(tr);
                         }
                     });
+
+                    // Update cumulative rainfall
+                    cumulativeRainfall = sessionRainfall;
 
                     // Send notification only if status changes
                     if (latestStatus !== lastNotification) {
