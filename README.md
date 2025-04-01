@@ -21,8 +21,18 @@
         th {
             background-color: #f2f2f2;
         }
+        .alert {
+            background-color: yellow;
+            font-weight: bold;
+        }
         .warning {
-            color: red;
+            background-color: orange;
+            color: white;
+            font-weight: bold;
+        }
+        .failure {
+            background-color: red;
+            color: white;
             font-weight: bold;
         }
     </style>
@@ -31,10 +41,23 @@
     <h2>Spreadsheet Data</h2>
     <p id="status">Loading data...</p>
     <table id="data-table"></table>
-    
+
     <script>
         const url = "https://script.google.com/macros/s/AKfycby5m8GXi6m3gCnbZ9dyqUMRtsMzYsgzYAdrpCKcUUyknRUgMsuHIZyswQg2nES4I2L03A/exec";
-        
+
+        let lastNotification = ""; // Store last notification type to avoid spam
+
+        // Request notification permission
+        if ("Notification" in window) {
+            Notification.requestPermission();
+        }
+
+        function sendNotification(title, message) {
+            if (Notification.permission === "granted") {
+                new Notification(title, { body: message, icon: "https://cdn-icons-png.flaticon.com/512/189/189664.png" });
+            }
+        }
+
         function fetchData() {
             fetch(url)
                 .then(response => {
@@ -54,11 +77,9 @@
                         return;
                     }
                     
-                    // Get current time and filter out entries older than 24 hours
                     let now = new Date();
                     let cutoffTime = now.getTime() - (24 * 60 * 60 * 1000); // 24 hours ago in milliseconds
-                    
-                    // Create table headers
+
                     let headerRow = document.createElement("tr");
                     ["Timestamp", "Rainfall (mm)", "Slope Status"].forEach(header => {
                         let th = document.createElement("th");
@@ -68,39 +89,66 @@
                     table.appendChild(headerRow);
                     
                     let totalRainfall = 0;
-                    
-                    // Create table rows
-                    data.slice(1).forEach(row => {
-                        let timestamp = new Date(row[0]).toLocaleString(); // Correct time formatting
+                    let latestStatus = "Safe";
+
+                    data.slice(1).reverse().forEach(row => {
+                        let timestamp = new Date(row[0]).toLocaleString();
                         let detected = row[1];
                         let entryTime = new Date(row[0]).getTime();
                         
                         if (detected === "YES" && entryTime >= cutoffTime) {
-                            let rainfall = 10; // Each YES = 10mm
+                            let rainfall = 5;
                             totalRainfall += rainfall;
-                            let slopeStatus = totalRainfall > 200 ? "Landslide Warning" : "Safe";
-                            
+
+                            let slopeStatus = "Safe";
+                            let rowClass = "";
+
+                            if (totalRainfall >= 70) {
+                                slopeStatus = "Failure";
+                                rowClass = "failure";
+                            } else if (totalRainfall >= 50) {
+                                slopeStatus = "Warning";
+                                rowClass = "warning";
+                            } else if (totalRainfall >= 40) {
+                                slopeStatus = "Alert";
+                                rowClass = "alert";
+                            }
+
+                            latestStatus = slopeStatus; // Store latest status
+
                             let tr = document.createElement("tr");
-                            [timestamp, rainfall, slopeStatus].forEach((cell, index) => {
+                            tr.classList.add(rowClass);
+
+                            [timestamp, rainfall, slopeStatus].forEach(cell => {
                                 let td = document.createElement("td");
                                 td.textContent = cell;
-                                if (index === 2 && slopeStatus === "Landslide Warning") {
-                                    td.classList.add("warning");
-                                }
                                 tr.appendChild(td);
                             });
+
                             table.appendChild(tr);
                         }
                     });
+
+                    // Send notification only if status changes
+                    if (latestStatus !== lastNotification) {
+                        if (latestStatus === "Alert") {
+                            sendNotification("⚠️ Alert", "Rainfall reached 40mm. Stay cautious!");
+                        } else if (latestStatus === "Warning") {
+                            sendNotification("⚠️ Warning", "Rainfall reached 50mm. Risk of landslide increasing!");
+                        } else if (latestStatus === "Failure") {
+                            sendNotification("🚨 Failure", "Rainfall reached 70mm! Landslide possible!");
+                        }
+                        lastNotification = latestStatus;
+                    }
                 })
                 .catch(error => {
                     document.getElementById("status").textContent = "Failed to load data: " + error.message;
                     console.error("Error fetching data:", error);
                 });
         }
-        
+
         fetchData(); // Initial fetch
-        setInterval(fetchData, 1000); // Refresh data every 1 second (1000 ms)
+        setInterval(fetchData, 30000); // Refresh data every 30 seconds
     </script>
 </body>
 </html>
