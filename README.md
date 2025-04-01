@@ -70,10 +70,10 @@
 
         function processData(data) {
             const now = new Date();
-            // Set cutoff time to today at 11:40 AM
-            const today1140 = new Date();
-            today1140.setHours(11, 40, 0, 0);
-            const cutoffTime = today1140.getTime();
+            // Set cutoff time to today at 12:15 PM
+            const today1215 = new Date();
+            today1140.setHours(12, 15, 0, 0);
+            const cutoffTime = today1215.getTime();
             
             let cumulativeRainfall = 0;
             let latestStatus = "Safe";
