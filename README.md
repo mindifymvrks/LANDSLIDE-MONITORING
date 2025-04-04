@@ -70,10 +70,10 @@
 
         function processData(data) {
             const now = new Date();
-            // Set cutoff time to today at 10:35 AM
-            const today1035 = new Date();
-            today1035.setHours(10, 35, 0, 0);
-            const cutoffTime = today1035.getTime();
+            
+            // Set cutoff time to today at 9:25 AM
+            const cutoffTime = new Date();
+            cutoffTime.setHours(9, 25, 0, 0); // 9:25 AM today
 
             let cumulativeRainfall = 0;
             let latestStatus = "Safe";
@@ -100,7 +100,7 @@
             }
 
             data.slice(1)
-                .filter(row => new Date(row[0]).getTime() >= cutoffTime && row[1] === "YES")
+                .filter(row => new Date(row[0]).getTime() >= cutoffTime.getTime() && row[1] === "YES")
                 .forEach(row => {
                     cumulativeRainfall += 0.2;
 
