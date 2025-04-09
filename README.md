@@ -71,9 +71,9 @@
         function processData(data) {
             const now = new Date();
             
-            // Set cutoff time to today at 9:25 AM
+            // Set cutoff time to today at 3:48 PM
             const cutoffTime = new Date();
-            cutoffTime.setHours(9, 25, 0, 0); // 9:25 AM today
+            cutoffTime.setHours(15, 48, 0, 0); // 3:48 PM today
 
             let cumulativeRainfall = 0;
             let latestStatus = "Safe";
